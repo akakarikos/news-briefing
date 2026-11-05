@@ -1,0 +1,566 @@
+{
+ "date": "2026-11-03",
+ "issueNo": 1,
+ "title": "Fintech & Architecture Briefing — week of 3 November 2026",
+ "window": "27 Oct – 3 Nov 2026",
+ "docUrl": "https://claude.ai/artifact/8Y3pf5SzR6rfhxiL73ebeR",
+ "note": "Three items fall just before the window (Google Cloud outage of 20 Oct, the agentic-payments council of 22 Oct, Microsoft sovereign-cloud update of 20 Oct). They are included because a follow-up or Greek angle landed this week, and are tagged Context. Security items taken from weekly roundups are marked reported where no primary bulletin could be opened.",
+ "sixty": [
+  {
+   "t": "Digital euro has its network providers: the ECB picked Nexi + Deutsche Telekom and Telefónica + Indra/Minsait to connect banks to the platform.",
+   "id": "de-network"
+  },
+  {
+   "t": "ECB AI-cyber action plans were due 31 Oct; the ECB now reviews them side by side, and the IT Risk Questionnaire moves to February 2027.",
+   "id": "ecb-ai-cyber"
+  },
+  {
+   "t": "ISO 20022 address cut-off in about two weeks: Swift CBPR+ drops fully unstructured addresses after 14 Nov; EPC rejects them from 15 Nov.",
+   "id": "iso-address"
+  },
+  {
+   "t": "Binance hot-wallet breach (29 Oct): up to ~$5.8bn moved, more than $2.3bn of stablecoins frozen.",
+   "id": "binance"
+  },
+  {
+   "t": "IBM i 7.6 TR3 / 7.5 TR9 announced (27 Oct) with security patch-tracking services; GA 20 Nov.",
+   "id": "ibmi-tr"
+  },
+  {
+   "t": "Regulators turn to AI-agent identity: HKMA's Project SAGE proposes Know Your Agent rules; US banks block credential-sharing agents.",
+   "id": "hkma-sage"
+  },
+  {
+   "t": "Verification of Payee one year in: it works, but corporate opt-outs are high; EPC rulebook 2.0 due around end-November.",
+   "id": "vop"
+  }
+ ],
+ "sections": [
+  {
+   "id": "reg",
+   "n": "1",
+   "title": "European regulation & supervision",
+   "items": [
+    {
+     "id": "ecb-ai-cyber",
+     "h": "ECB deadline for AI-cyber action plans passed (31 Oct)",
+     "date": "31 Oct",
+     "flag": {
+      "k": "deadline",
+      "t": "Deadline passed"
+     },
+     "s": "Following the Supervisory Board chair's July letter, every SSM significant institution had to give its JST a plan covering attack-surface inventory, faster patching at scale, AI-enabled detection with human oversight, supply-chain assurance and, in the medium term, legacy replacement. The ECB will now compare all plans and share conclusions. The annual IT Risk Questionnaire moves from September 2026 to February 2027, and a separate post-quantum communication is promised.",
+     "w": "The plan is now a supervisory commitment. Its milestones (exposed surface, IBM i and TIBCO patch cadence, legacy decommissioning) should be traceable in the SAB roadmap, because the JST will check delivery against them.",
+     "l": [
+      {
+       "t": "A&O Shearman analysis",
+       "u": "https://www.aoshearman.com/en/insights/ecb-requires-significant-institutions-to-address-ai-enabled-cybersecurity-threats"
+      }
+     ]
+    },
+    {
+     "id": "amla",
+     "h": "AMLA central-database RTS consultation closes (3 Nov)",
+     "date": "3 Nov",
+     "flag": {
+      "k": "deadline",
+      "t": "Closes today"
+     },
+     "s": "The draft standard defines what supervisors will feed into AMLA's AML/CFT central database: risk profiles, sanctions and measures, authorisations, and fit-and-proper outcomes, with data-quality and confidentiality rules. A public hearing was held the same afternoon.",
+     "w": "The database fields mirror what the Bank of Greece will ask of us. Our compliance data model in Databricks should produce entity-level ML/TF risk data without manual collation.",
+     "l": [
+      {
+       "t": "Regulation Tomorrow",
+       "u": "https://www.regulationtomorrow.com/2026/10/amla-consults-on-draft-rts-for-aml-cft-central-database/"
+      }
+     ]
+    },
+    {
+     "id": "psd3",
+     "h": "PSD3/PSR: Official Journal publication expected Dec 2026 – Jan 2027",
+     "date": "28 Oct",
+     "flag": {
+      "k": "watch",
+      "t": "Timeline"
+     },
+     "s": "The EBA expects the PSR to extend name-IBAN verification to credit transfers in all EU currencies. Application follows roughly 18 months after entry into force.",
+     "w": "This sets the PSD3 programme clock to mid-2028. The open-banking permission dashboard and fraud-liability changes should be scoped in this budget cycle.",
+     "l": [
+      {
+       "t": "FinTech Weekly",
+       "u": "https://www.fintechweekly.com/magazine/articles/verification-of-payee-one-year-instant-payments-2026"
+      }
+     ]
+    },
+    {
+     "id": "aiact",
+     "h": "AI Act: next hard date is 2 December 2026",
+     "date": "Upcoming",
+     "flag": {
+      "k": "deadline",
+      "t": "4 weeks"
+     },
+     "s": "The Digital Omnibus, in force since 27 July, moved Annex III high-risk duties (including credit scoring) to 2 Dec 2027. The Article 50(2) machine-readable marking duty for generative systems already on the market before August 2026 still applies from 2 Dec 2026.",
+     "w": "We need a list of customer-facing GenAI outputs (chatbots, generated letters) and a marking approach for them within four weeks.",
+     "l": [
+      {
+       "t": "Usercentrics summary",
+       "u": "https://usercentrics.com/knowledge-hub/eu-ai-act-high-risk-delay-article-50-transparency-consent/"
+      }
+     ]
+    },
+    {
+     "id": "eba-tax",
+     "h": "EBA advises on simpler Taxonomy disclosures",
+     "date": "29 Oct",
+     "flag": null,
+     "s": "The EBA published advice on targeted simplifications to Taxonomy disclosures for banks and investment firms. It affects ESG reporting rather than architecture.",
+     "w": "No architecture action; flag to the ESG reporting data owners in case Databricks reporting pipelines need to shrink.",
+     "l": [
+      {
+       "t": "EBA press releases",
+       "u": "https://www.eba.europa.eu/publications-and-media/press-releases"
+      }
+     ]
+    }
+   ],
+   "short": "Regulation"
+  },
+  {
+   "id": "pay",
+   "n": "2",
+   "title": "Payments",
+   "quiet": "No material Wero/EPI, TARGET2/T2 or TIPS releases in the window.",
+   "items": [
+    {
+     "id": "de-network",
+     "h": "ECB selects digital euro network-service providers",
+     "date": "30 Oct – 2 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Target architecture"
+     },
+     "s": "Two consortia will carry traffic between banks, national central banks and the digital euro platform. Nexi with Deutsche Telekom has been live for the pilot since 28 September; Telefónica with Indra's Minsait joins from May 2027 on a ten-year term, bringing MPLS/SD-WAN, API integration, certificates, encryption and a SOC. Both should support a live digital euro from 2029, if the regulation passes and the Governing Council decides to issue.",
+     "w": "Connectivity becomes a concrete design choice. Treat it like TIPS access: pick a primary provider, plan for dual-homing, and compare on-boarding through APIM/TIBCO with a dedicated gateway. Add it to the 2027 target architecture now.",
+     "l": [
+      {
+       "t": "Ledger Insights",
+       "u": "https://www.ledgerinsights.com/ecb-picks-nexi-and-telefonica-consortia-to-run-digital-euro-network-connections/"
+      },
+      {
+       "t": "Telefónica / Minsait release",
+       "u": "https://news.europawire.eu/telefonica-and-minsait-selected-to-build-secure-digital-euro-communications-infrastructure-for-ecb/eu-press-release/2026/11/02/12/17/10/185523/"
+      }
+     ]
+    },
+    {
+     "id": "vop",
+     "h": "Verification of Payee at one year: it works, but corporates opt out",
+     "date": "28 Oct",
+     "flag": {
+      "k": "watch",
+      "t": "Rulebook 2.0"
+     },
+     "s": "The EBA calls the rollout broadly successful. ECB commentary and one Deutsche Bank sample (January 2026: 80% of SCT batch files opted out) show ERP integration lagging, and a single no-match can stall a whole batch. EPC VoP rulebook v1.1 has applied since 20 September; v2.0, with a formal inquiry and compensation process, is due around end-November.",
+     "w": "Check our own opt-out ratio and VoP responder latency. Budget for rulebook 2.0 changes to the inquiry and dispute flows in Appian.",
+     "l": [
+      {
+       "t": "FinTech Weekly",
+       "u": "https://www.fintechweekly.com/magazine/articles/verification-of-payee-one-year-instant-payments-2026"
+      }
+     ]
+    },
+    {
+     "id": "iso-address",
+     "h": "ISO 20022 structured-address cut-off: 14–15 November",
+     "date": "14–15 Nov",
+     "flag": {
+      "k": "urgent",
+      "t": "Act this week"
+     },
+     "s": "With Swift SR2026, fully unstructured postal addresses are no longer supported in CBPR+. Town and country must at least sit in their own fields for all agents and parties; a BIC alone still works for agents. Swift offers no contingency, and EPC payment messages reject unstructured addresses from 15 November.",
+     "w": "This is a data-quality problem in the IBM i customer master as much as a TIBCO mapping problem. Run a reject simulation on last month's outbound traffic this week. Swift's page also mentions an August notice on extending the migration, so confirm scope with the Swift relationship team.",
+     "l": [
+      {
+       "t": "Swift notice",
+       "u": "https://www.swift.com/news-events/news/iso-20022-milestone-november-2026-unstructured-addresses-be-removed"
+      }
+     ]
+    }
+   ],
+   "short": "Payments"
+  },
+  {
+   "id": "gr",
+   "n": "3",
+   "title": "Greece",
+   "quiet": "No Bank of Greece regulatory publications of note in the window.",
+   "items": [
+    {
+     "id": "dias",
+     "h": "DIAS is a founding member of a European council on agentic payments",
+     "date": "22 Oct",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "PPRO, BLIK, EPI (Wero), Bancontact and DIAS formed the Local Payments Council for Agentic Commerce. It will set common standards for out-of-band authorisation, agent identity on non-card rails, mandates and delegated consent, and disputes and liability.",
+     "w": "IRIS is likely to be the first Greek rail AI agents can call. Ask DIAS which working groups are open to member banks, so we shape the consent and liability model instead of inheriting it.",
+     "l": [
+      {
+       "t": "The Paypers",
+       "u": "https://thepaypers.com/payments/news/ppro-launches-local-payments-council-for-agentic-commerce"
+      },
+      {
+       "t": "BlackFin Tech Weekly",
+       "u": "https://blackfintech.substack.com/p/blackfin-tech-weekly-november-2nd"
+      }
+     ]
+    },
+    {
+     "id": "athens",
+     "h": "Fintech Athens 5.0 puts agentic commerce on the Greek agenda",
+     "date": "1 Nov",
+     "flag": null,
+     "s": "NBG co-organised the event. NBG Pay's CEO argued that acquirers are moving from processing to merchant growth services, and that consumers must keep control of their own AI assistants.",
+     "w": "Peer banks are framing agentic commerce as a merchant-services play; our position paper on agent access should cover the acquiring side too.",
+     "l": [
+      {
+       "t": "Greek City Times",
+       "u": "https://greekcitytimes.com/2026/11/01/banks-prepare-for-ai-driven-shopping-and-payments"
+      }
+     ]
+    },
+    {
+     "id": "results",
+     "h": "Results season: Piraeus 9M, NBG on 4 Nov",
+     "date": "30 Oct",
+     "flag": null,
+     "s": "Piraeus reported 9M 2026 on 30 October: core operating profit €930m, cost-to-income 33%, client deposits €69.2bn. The release had no technology disclosures. NBG reports on 4 November.",
+     "w": "Cost-to-income near 33% keeps pressure on run-cost; expect the CTO to ask how the 2027 roadmap moves that number.",
+     "l": [
+      {
+       "t": "Piraeus 9M results",
+       "u": "https://uk.finance.yahoo.com/news/piraeus-bank-nine-month-2026-104300090.html"
+      },
+      {
+       "t": "Cyprus Mail",
+       "u": "https://cyprus-mail.com/2026/11/03/national-bank-of-greece-sets-date-for-third-quarter-results"
+      }
+     ]
+    }
+   ],
+   "short": "Greece"
+  },
+  {
+   "id": "sec",
+   "n": "4",
+   "title": "Payment & banking security",
+   "items": [
+    {
+     "id": "binance",
+     "h": "Binance hot-wallet breach",
+     "date": "29 Oct",
+     "flag": {
+      "k": "urgent",
+      "t": "Major incident"
+     },
+     "s": "Assets worth up to about $5.8bn moved from several Binance hot wallets to attacker-labelled addresses. Tether and Circle froze more than $2.3bn of stablecoins. Binance pointed to a compromised engineer laptop and is still investigating; a reported FBI link to North Korea is not confirmed in primary sources.",
+     "w": "The likely pattern is a privileged-endpoint compromise feeding automated signing. Review controls on our high-value signing paths: HSM-backed payment release, TIBCO admin consoles, AKS cluster-admin, and break-glass access to IBM i.",
+     "l": [
+      {
+       "t": "BleepingComputer",
+       "u": "https://bleepingcomputer.com/news/security/binance-probes-potential-58-billion-crypto-theft-hack"
+      }
+     ]
+    },
+    {
+     "id": "gcp",
+     "h": "Google Cloud outage follow-up: EBA queries a critical provider",
+     "date": "20–21 Oct",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "A power event in europe-west2 (London) on 20 October cut Revolut card payments and disrupted Lloyds and HSBC for hours. The EBA contacted Google Cloud as a DORA-designated critical provider and stressed that designation does not move incident responsibility away from banks. Google's post-incident analysis is pending.",
+     "w": "Supervisors will ask every bank whether single-region dependencies are tested. Our Azure region-pair failover for AKS and the Kafka replication topology should be ready to show evidence.",
+     "l": [
+      {
+       "t": "The Star / Reuters",
+       "u": "https://www.thestar.com.my/tech/tech-news/2026/10/21/europe039s-financial-regulators-query-google-over-cloud-outage-that-hit-banks"
+      }
+     ]
+    },
+    {
+     "id": "vulns",
+     "h": "Exploitation and vulnerabilities (reported)",
+     "date": "26–29 Oct",
+     "flag": {
+      "k": "watch",
+      "t": "Patch check"
+     },
+     "s": "CISA confirmed in-the-wild exploitation of the PHP2Shell bugs, seen chained with a Palo Alto Networks firewall flaw. Red Hat issued a critical Linux bulletin (RHSB-2026-016) with patches pending at the time of reporting. Three South Korean financial firms, including Bithumb, disclosed breaches.",
+     "w": "Check RHEL/OpenShift exposure on on-prem Kubernetes nodes against RHSB-2026-016, confirm the perimeter firewall estate is patched, and report status to the CISO.",
+     "l": [
+      {
+       "t": "This Week in Security",
+       "u": "https://this.weekinsecurity.com/this-week-in-security-november-1-2026-edition"
+      }
+     ]
+    }
+   ],
+   "short": "Security"
+  },
+  {
+   "id": "arch",
+   "n": "5",
+   "title": "Solution architecture & backend",
+   "quiet": "No Kafka/Confluent, Databricks or Informatica releases of note in the window.",
+   "items": [
+    {
+     "id": "ibmi-tr",
+     "h": "IBM i 7.6 TR3 and 7.5 TR9 announced, GA 20 November",
+     "date": "27 Oct",
+     "flag": {
+      "k": "watch",
+      "t": "Plan Q1"
+     },
+     "s": "Headline items are new services for tracking security patches, plus networking and storage performance work. IBM's 4 November Guided Tour covers security and modernisation, and the next cumulative PTF package is due 4 December. Fortra is regrouping its IBM i products under a Power by Fortra brand.",
+     "w": "Patch-tracking services feed the ECB action-plan commitment on patch velocity, so plan TR adoption for Q1. If we use Fortra tooling on IBM i, check roadmap and contract continuity under the new brand.",
+     "l": [
+      {
+       "t": "IT Jungle",
+       "u": "https://www.itjungle.com/"
+      },
+      {
+       "t": "IT Jungle preview",
+       "u": "https://www.itjungle.com/2026/10/19/fall-trs-expected-next-week-at-combined-ibm-common-conference/"
+      }
+     ]
+    },
+    {
+     "id": "azure-sov",
+     "h": "Microsoft sovereignty features land at Ignite (17–20 Nov)",
+     "date": "20 Oct",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "Already generally available: external key management through Managed HSM, Confidential VMs, and SQL Server on Azure Local. The Sovereign Control Panel (preview) and Foundry Local (GA) are slated for Ignite, and the EU Data Guardian model for overseeing Microsoft engineers' remote access is rolling out.",
+     "w": "Root keys held outside Microsoft strengthen our DORA exit strategy and data-residency position. Foundry Local is a candidate for on-prem inference on sensitive RAG workloads.",
+     "l": [
+      {
+       "t": "CIO Monitor",
+       "u": "https://ciomonitor.com/articles/microsoft-expands-sovereign-cloud-with-external-keys-and-eu-oversight-70a4c81a"
+      }
+     ]
+    },
+    {
+     "id": "kubecon",
+     "h": "KubeCon NA next week (9–12 Nov): agent security as a platform problem",
+     "date": "27–29 Oct",
+     "flag": null,
+     "s": "CNCF's pre-event writing argues an agent's blast radius is whatever its tools permit. Volcano 1.16 added namespace-level hierarchical queues for multi-tenant batch and AI scheduling.",
+     "w": "Agent tool scopes belong in the platform layer (AKS policies, workload identity, APIM), not in each team's prompt code. Worth standardising as a pattern.",
+     "l": [
+      {
+       "t": "CNCF blog",
+       "u": "https://www.cncf.io/blog/"
+      },
+      {
+       "t": "CNCF announcements",
+       "u": "https://cncf.io/news/announcements"
+      }
+     ]
+    }
+   ],
+   "short": "Architecture"
+  },
+  {
+   "id": "ai",
+   "n": "6",
+   "title": "Enterprise AI in banking",
+   "items": [
+    {
+     "id": "hkma-sage",
+     "h": "HKMA launches Project SAGE on AI-agent identity",
+     "date": "2 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Design to it"
+     },
+     "s": "The discussion paper proposes Know Your Agent standards: signed identity certificates, capability disclosures, behavioural audit logs, and a link from each agent action to a licensed principal. It also floats a registry of material agents and powers to suspend individual agent IDs. It builds on the FSB's 12 AI sound practices from mid-October.",
+     "w": "The clearest supervisory blueprint yet for agent governance. It maps onto Entra workload identities, APIM policies and an agent inventory in our model-risk register; design to it ahead of any EBA equivalent.",
+     "l": [
+      {
+       "t": "Tech Times",
+       "u": "https://www.techtimes.com/articles/329929/20261103/hong-kong-becomes-first-banking-regulator-require-identity-credentials-ai-agents.htm"
+      },
+      {
+       "t": "FSB sound practices",
+       "u": "https://www.regulationtomorrow.com/2026/10/fsb-issues-sound-practices-for-responsible-adoption-of-ai/"
+      }
+     ]
+    },
+    {
+     "id": "us-agents",
+     "h": "US banks block third-party AI agents using customer credentials",
+     "date": "27–28 Oct",
+     "flag": null,
+     "s": "JPMorgan and Bank of America are detecting and blocking agents that log in with customers' usernames and passwords, and are steering toward read-only access. Bank of America told customers they are responsible for activity done with shared credentials.",
+     "w": "PSD2/PSD3 already route third-party access through APIs, but agentic browsers bring screen-scraping back. We need agent detection on e-banking and a position on scoped, delegated OAuth consent for agents.",
+     "l": [
+      {
+       "t": "Malwarebytes",
+       "u": "https://malwarebytes.com/blog/ai/2026/10/banks-are-blocking-ai-agents-from-customer-accounts"
+      }
+     ]
+    }
+   ],
+   "short": "AI"
+  },
+  {
+   "id": "ind",
+   "n": "7",
+   "title": "Industry moves",
+   "quiet": "No core-banking vendor M&A in the window.",
+   "items": [
+    {
+     "id": "guidewire",
+     "h": "Guidewire buys hyperexponential for €1.5bn plus earn-out",
+     "date": "27 Oct",
+     "flag": null,
+     "s": "The week's largest European fintech-software exit, in insurance pricing rather than banking.",
+     "w": "Relevant only to bancassurance pricing stacks; no direct action.",
+     "l": [
+      {
+       "t": "BlackFin Tech Weekly",
+       "u": "https://blackfintech.substack.com/p/blackfin-tech-weekly-november-2nd"
+      }
+     ]
+    },
+    {
+     "id": "backbase",
+     "h": "Backbase launches Delivery Factory",
+     "date": "26 Oct",
+     "flag": null,
+     "s": "The AI platform pairs bank delivery teams with coding agents; Backbase claims about twice the delivery pace across 10+ implementations.",
+     "w": "Expect vendors to price AI-accelerated delivery. Ask for evidence on defect rates and maintainability, not just velocity.",
+     "l": [
+      {
+       "t": "BlackFin Tech Weekly",
+       "u": "https://blackfintech.substack.com/p/blackfin-tech-weekly-november-2nd"
+      }
+     ]
+    },
+    {
+     "id": "funding",
+     "h": "European funding was light and AI-heavy",
+     "date": "30 Oct",
+     "flag": null,
+     "s": "Nevis raised €62.6m (Series B, EQT) for wealth-management AI, Ravical raised a €15.3m seed for accounting workflows, and Lovey (UK) secured up to £250m in SME-lending credit lines.",
+     "w": "No direct vendor exposure; wealth-management AI is worth tracking for the private-banking roadmap.",
+     "l": [
+      {
+       "t": "FinTech Global",
+       "u": "https://fintech.global/2026/10/30/fintech-funding-roars-ahead-with-over-2-6bn-raised-across-all-deals/"
+      }
+     ]
+    }
+   ],
+   "short": "Industry"
+  }
+ ],
+ "deadlines": [
+  {
+   "iso": "2026-11-03",
+   "label": "3 Nov 2026",
+   "item": "AMLA central-database RTS consultation closes; public hearing",
+   "owner": "Compliance / data"
+  },
+  {
+   "iso": "2026-11-04",
+   "label": "4 Nov 2026",
+   "item": "NBG 9M results; IBM i fall TR Guided Tour",
+   "owner": "Strategy / IBM i team"
+  },
+  {
+   "iso": "2026-11-09",
+   "label": "9–12 Nov 2026",
+   "item": "KubeCon + CloudNativeCon NA, Salt Lake City",
+   "owner": "Platform"
+  },
+  {
+   "iso": "2026-11-14",
+   "label": "14–15 Nov 2026",
+   "item": "Swift SR2026: unstructured addresses removed in CBPR+; EPC rejects them",
+   "owner": "Payments / TIBCO"
+  },
+  {
+   "iso": "2026-11-17",
+   "label": "17–20 Nov 2026",
+   "item": "Microsoft Ignite (Sovereign Control Panel, Foundry Local)",
+   "owner": "Cloud"
+  },
+  {
+   "iso": "2026-11-20",
+   "label": "20 Nov 2026",
+   "item": "IBM i 7.6 TR3 / 7.5 TR9 GA",
+   "owner": "IBM i team"
+  },
+  {
+   "iso": "2026-11-30",
+   "label": "~End Nov 2026",
+   "item": "EPC VoP rulebook v2.0 published",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2026-12-02",
+   "label": "2 Dec 2026",
+   "item": "AI Act Art. 50(2) marking for existing GenAI systems; new Art. 5 prohibition",
+   "owner": "AI governance"
+  },
+  {
+   "iso": "2026-12-04",
+   "label": "4 Dec 2026",
+   "item": "Next IBM i cumulative PTF package",
+   "owner": "IBM i team"
+  },
+  {
+   "iso": "2026-12-15",
+   "label": "Dec 2026 – Jan 2027",
+   "item": "PSD3/PSR expected in the Official Journal",
+   "owner": "Payments / Legal"
+  },
+  {
+   "iso": "2027-02-01",
+   "label": "Feb 2027",
+   "item": "ECB IT Risk Questionnaire (moved from Sept 2026)",
+   "owner": "CISO / Architecture"
+  },
+  {
+   "iso": "2027-04-09",
+   "label": "9 Apr 2027",
+   "item": "IPR: euro-area EMIs/PIs must send and receive SCT Inst",
+   "owner": "Payments"
+  }
+ ],
+ "agenda": [
+  {
+   "b": "Turn the ECB AI-cyber action plan into architecture work.",
+   "p": "Walk through what we committed to on 31 Oct (attack-surface reduction, patch velocity, legacy replacement) and assign each item to a roadmap epic with an owner. The JST's review will check delivery, and the IT Risk Questionnaire follows in February."
+  },
+  {
+   "b": "ISO 20022 address go/no-go this week.",
+   "p": "Run a reject simulation on October's outbound CBPR+ and SEPA traffic. Agree remediation for IBM i customer-master address quality and a TIBCO fallback for hybrid addresses."
+  },
+  {
+   "b": "Prove regional resilience before supervisors ask.",
+   "p": "Use the Google europe-west2 outage as the scenario: schedule an Azure region-failover test for AKS payment services and Kafka replication, and refresh the DORA exit-plan evidence for Microsoft."
+  },
+  {
+   "b": "Set our agent-access stance.",
+   "p": "Agree a position paper on how third-party and internal AI agents authenticate (workload identity, scoped OAuth consent via APIM), how we detect credential-sharing agents on e-banking, and how we engage with the DIAS-backed agentic-commerce council."
+  }
+ ]
+}

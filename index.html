@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Weekly Fintech & Architecture Briefing — archive, favorites and read-later.">
+<title>Fintech & Architecture Briefings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reading desk — sticky top bar with the four shelves (Latest, Archive, Favorites, Read later) and a search; the body swaps between an issue reader and item lists. */
+:root{
+  --bg:#F3F5F6; --surface:#FFFFFF; --ink:#13202A; --muted:#5A6A75; --line:#DCE2E6;
+  --accent:#0A6680; --accent-soft:#E3F0F4; --amber:#9A5B05; --amber-soft:#FBF0DC; --crit:#B0222D; --crit-soft:#FBE7E8; --star:#B8860B;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1419; --surface:#141E25; --ink:#E4EBEF; --muted:#93A4AF; --line:#25333D;
+  --accent:#55B6D2; --accent-soft:#16303A; --amber:#E2A64B; --amber-soft:#33270F; --crit:#EF7A82; --crit-soft:#3A1C1F; --star:#E8BE4F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1419; --surface:#141E25; --ink:#E4EBEF; --muted:#93A4AF; --line:#25333D;
+  --accent:#55B6D2; --accent-soft:#16303A; --amber:#E2A64B; --amber-soft:#33270F; --crit:#EF7A82; --crit-soft:#3A1C1F; --star:#E8BE4F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 15.5px/1.6 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:1000px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button{font-family:var(--body)}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .inner{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:10px}
+.brand{font:700 18px/1 var(--display);letter-spacing:.01em;color:var(--ink);text-decoration:none;display:flex;gap:8px;align-items:baseline}
+.brand small{font:500 11px var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+nav{display:flex;flex-wrap:wrap;gap:4px}
+nav a{font:500 14px var(--body);color:var(--muted);text-decoration:none;padding:7px 11px;border-radius:7px;display:inline-flex;gap:6px;align-items:center}
+nav a:hover{color:var(--ink);background:var(--bg)}
+nav a[aria-current="page"]{color:var(--ink);background:var(--accent-soft)}
+nav .n{font:500 11px var(--mono);color:var(--muted)}
+.gsearch{flex:1 1 200px;min-width:0;font:400 14px var(--body);padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+main.inner{padding-block:26px 64px;display:grid;gap:32px}
+.status{padding:28px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);display:grid;gap:6px;text-align:left}
+.status b{color:var(--ink);font-family:var(--display);font-size:18px}
+.banner{font-size:13px;color:var(--amber);background:var(--amber-soft);border-radius:8px;padding:8px 12px}
+/* issue */
+.mast{display:grid;gap:12px;border-bottom:3px solid var(--ink);padding-bottom:18px}
+.mast-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:center}
+.mast h1{font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-.01em}
+.mast h1 span{color:var(--accent)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 13px/1.4 var(--mono);color:var(--muted)}
+.note{font-size:13.5px;color:var(--muted);max-width:72ch;margin:0}
+.pager{display:flex;gap:6px}
+.pbtn{font:500 13px var(--body);padding:7px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none}
+.pbtn[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.sixty{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;display:grid;gap:12px}
+.sixty h2{font-size:21px;font-weight:600}
+.sixty ol{margin:0;padding:0;list-style:none;display:grid;gap:9px;counter-reset:s}
+.sixty li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline}
+.sixty li::before{counter-increment:s;content:counter(s,decimal-leading-zero);font:500 12px var(--mono);color:var(--accent)}
+.sixty li a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--muted)}
+.sixty li a:hover{color:var(--accent)}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--topH,58px));z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{font:500 13px/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.chip .n{font:500 11px var(--mono);color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
+.chip:hover{border-color:var(--accent)}
+.sec{display:grid;gap:12px}
+.sec-head{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px}
+.sec-head .num{font:500 13px var(--mono);color:var(--accent)}
+.sec-head h2{font-size:23px;font-weight:600}
+.quiet{color:var(--muted);font-size:14px;margin:0}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;scroll-margin-top:140px}
+.item.hl{box-shadow:0 0 0 2px var(--accent)}
+.ihead{padding:16px 18px 0;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:start}
+.item h3{font-size:18.5px;font-weight:600;min-width:0}
+.marks{display:flex;gap:4px}
+.mk{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.mk svg{width:18px;height:18px}
+.mk:hover{border-color:var(--accent);color:var(--ink)}
+.mk.fav[aria-pressed="true"]{color:var(--star);border-color:var(--star)}
+.mk.fav[aria-pressed="true"] svg{fill:var(--star)}
+.mk.later[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.mk.later[aria-pressed="true"] svg{fill:var(--accent)}
+.mk:disabled{opacity:.35;cursor:not-allowed}
+.tagrow{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.date{font:500 12px var(--mono);color:var(--muted)}
+.flag{font:500 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:4px}
+.flag.urgent{background:var(--crit-soft);color:var(--crit)}
+.flag.deadline{background:var(--amber-soft);color:var(--amber)}
+.flag.watch{background:var(--accent-soft);color:var(--accent)}
+.flag.ctx{color:var(--muted);border:1px solid var(--line)}
+.body{padding:12px 18px 18px;display:grid;gap:12px;min-width:0}
+.body p{margin:0;max-width:72ch}
+.why{background:var(--accent-soft);border-radius:8px;padding:12px 14px;display:grid;gap:4px}
+.why .eyebrow{color:var(--accent)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{font:500 13px var(--body);text-decoration:none;padding:6px 10px;border:1px solid var(--line);border-radius:6px}
+.links a::after{content:" ↗";font-size:12px}
+.links a:hover{border-color:var(--accent);background:var(--accent-soft)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.d,td.left{font:500 13px var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.left.soon{color:var(--crit)} .left.near{color:var(--amber)} .left.far,.left.past{color:var(--muted)}
+.agenda{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:a}
+.agenda li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.agenda li::before{counter-increment:a;content:counter(a);grid-row:span 2;font:700 26px/1 var(--display);color:var(--accent)}
+.agenda b{font-family:var(--display);font-size:17px;font-weight:600}
+.agenda p{margin:0}
+/* lists */
+.vhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline;border-bottom:3px solid var(--ink);padding-bottom:12px}
+.vhead h1{font-size:clamp(26px,4.4vw,40px);font-weight:700}
+.vhead p{margin:0;color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px;text-decoration:none;color:inherit;align-content:start}
+.card:hover{border-color:var(--accent)}
+.card h2{font-size:19px;font-weight:600}
+.card ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted);display:grid;gap:4px}
+.card .stats{display:flex;flex-wrap:wrap;gap:12px;font:500 12px var(--mono);color:var(--muted)}
+.card .new{color:var(--accent)}
+.rows{display:grid;gap:10px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:start}
+.row h3{font-size:17px;font-weight:600}
+.row h3 a{color:inherit;text-decoration:none}
+.row h3 a:hover{color:var(--accent)}
+.row p{margin:0;font-size:14px;color:var(--muted);grid-column:1/-1;max-width:80ch}
+.row .src{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font:500 12px var(--mono);color:var(--muted);align-items:center}
+.group{display:grid;gap:10px}
+.group > .eyebrow{padding-top:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13.5px;z-index:20}
+@media (max-width:560px){.sixty{padding:16px}.sec-head h2{font-size:20px}.top .inner{gap:8px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<header class="top gut" id="top">
+  <div class="inner">
+    <a class="brand" href="#latest">Briefings <small>Fintech &amp; Architecture</small></a>
+    <nav aria-label="Library">
+      <a href="#latest" data-v="latest">Latest</a>
+      <a href="#archive" data-v="archive">Archive <span class="n" id="n-archive"></span></a>
+      <a href="#favorites" data-v="favorites">Favorites <span class="n" id="n-fav"></span></a>
+      <a href="#read-later" data-v="read-later">Read later <span class="n" id="n-later"></span></a>
+    </nav>
+    <label for="gq" style="position:absolute;left:-9999px">Search all issues</label>
+    <input id="gq" class="gsearch" type="search" placeholder="Search all issues: DORA, IBM i, VoP…">
+  </div>
+</header>
+
+<main class="inner gut" id="view">
+  <div class="status"><b>Loading your briefing library</b><span>Loading issues…</span></div>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON = {
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+  later:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></svg>'
+};
+const S = { issues:[], loaded:false, timedOut:false, error:null, db:null, uid:null, canMark:false,
+  marks:{fav:{}, later:{}, seen:{}}, secFilter:"all", q:"" };
+
+/* ---------- routing ---------- */
+function route(){
+  const h = (location.hash || "#latest").slice(1);
+  if (h.startsWith("issue-")){
+    const [d, item] = h.slice(6).split("--");
+    return {v:"issue", date:d, item:item || null};
+  }
+  return {v:["archive","favorites","read-later"].includes(h) ? h : "latest"};
+}
+window.addEventListener("hashchange", () => { S.secFilter="all"; render(true); });
+
+/* ---------- helpers ---------- */
+const key = (d,id) => d + "__" + id;
+const issueBy = d => S.issues.find(i => i.date === d);
+const itemsOf = iss => iss.sections.flatMap(sec => sec.items.map(it => ({...it, sec})));
+function findItem(k){
+  const [d,id] = k.split("__"); const iss = issueBy(d); if (!iss) return null;
+  const it = itemsOf(iss).find(x => x.id === id); return it ? {iss, it} : null;
+}
+function fmtDate(d){ return new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>t.hidden=true,2200); }
+function counts(){
+  $("#n-archive").textContent = S.issues.length || "";
+  $("#n-fav").textContent = Object.keys(S.marks.fav).length || "";
+  $("#n-later").textContent = Object.keys(S.marks.later).length || "";
+}
+
+/* ---------- marks (private per viewer) ---------- */
+const LS_KEY = "fab-library-marks-v1";
+function persist(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S.marks)); }
+  catch(e){ toast("Couldn't save in this browser (private mode or storage blocked)."); }
+}
+function loadMarks(){
+  try { const d = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+    if (d) S.marks = {fav:{...(d.fav||{})}, later:{...(d.later||{})}, seen:{...(d.seen||{})}}; } catch(e){}
+}
+function toggle(kind, k){
+  if (!S.canMark) return;
+  const m = S.marks[kind];
+  if (m[k]) { delete m[k]; toast(kind==="fav" ? "Removed from favorites" : "Removed from read later"); }
+  else { m[k] = Date.now(); toast(kind==="fav" ? "Added to favorites" : "Saved for later"); }
+  persist(); counts();
+  document.querySelectorAll(`[data-mk="${kind}"][data-k="${CSS.escape(k)}"]`).forEach(b => b.setAttribute("aria-pressed", !!m[k]));
+  const r = route(); if (r.v==="favorites" || r.v==="read-later") render();
+}
+function markBtns(k){
+  const dis = S.canMark ? "" : " disabled";
+  const t = S.canMark ? "" : " (saving unavailable)";
+  return `<div class="marks">
+    <button type="button" class="mk fav" data-mk="fav" data-k="${esc(k)}" aria-pressed="${!!S.marks.fav[k]}" title="Favorite${t}" aria-label="Favorite"${dis}>${ICON.star}</button>
+    <button type="button" class="mk later" data-mk="later" data-k="${esc(k)}" aria-pressed="${!!S.marks.later[k]}" title="Read later${t}" aria-label="Read later"${dis}>${ICON.later}</button></div>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-mk]"); if (b){ e.preventDefault(); toggle(b.dataset.mk, b.dataset.k); return; }
+  const c = e.target.closest(".chip[data-f]"); if (c){ S.secFilter = c.dataset.f; render(); }
+});
+
+/* ---------- views ---------- */
+function flagHTML(f){ return f ? `<span class="flag ${esc(f.k)}">${esc(f.t)}</span>` : ""; }
+function linksHTML(l){ return (l||[]).map(({t,u}) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`).join(""); }
+
+function viewIssue(iss, focus){
+  const idx = S.issues.indexOf(iss);
+  const newer = S.issues[idx-1], older = S.issues[idx+1];
+  const all = itemsOf(iss).length;
+  const chips = [["all","All",all], ...iss.sections.map(s => [s.id, s.short || s.title, s.items.length])];
+  const secs = iss.sections.filter(s => S.secFilter==="all" || s.id===S.secFilter);
+  const today = new Date(); today.setHours(0,0,0,0);
+  return `
+  <header class="mast">
+    <div class="mast-top"><span class="eyebrow">Issue ${esc(String(iss.issueNo).padStart(2,"0"))} · ${esc(fmtDate(iss.date))}</span>
+      <div class="pager">
+        <a class="pbtn" href="${older ? "#issue-"+older.date : "#archive"}" aria-disabled="${!older}">← Older</a>
+        <a class="pbtn" href="${newer ? "#issue-"+newer.date : "#latest"}" aria-disabled="${!newer}">Newer →</a>
+      </div></div>
+    <h1>${esc(iss.title.split(" — ")[0])} <span>— ${esc(iss.title.split(" — ")[1] || "")}</span></h1>
+    <div class="meta"><span>Coverage: ${esc(iss.window)}</span><a href="newsletters/${esc(iss.date)}.md">Markdown ↗</a>${iss.docUrl ? `<a href="${esc(iss.docUrl)}" target="_blank" rel="noopener">Editable doc (claude.ai) ↗</a>` : ""}</div>
+    ${iss.note ? `<p class="note">${esc(iss.note)}</p>` : ""}
+  </header>
+  <section class="sixty"><h2>This week in 60 seconds</h2><ol>
+    ${(iss.sixty||[]).map(({t,id}) => `<li><a href="#issue-${iss.date}--${esc(id)}">${esc(t)}</a></li>`).join("")}</ol></section>
+  <div class="rail">${chips.map(([id,t,n]) => `<button type="button" class="chip" data-f="${esc(id)}" aria-pressed="${S.secFilter===id}">${esc(t)} <span class="n">${n}</span></button>`).join("")}</div>
+  ${secs.map(sec => `<section class="sec"><div class="sec-head"><span class="num">${esc(sec.n)}</span><h2>${esc(sec.title)}</h2></div>
+    ${sec.items.map(it => { const k = key(iss.date,it.id); return `
+      <article class="item${focus===it.id ? " hl":""}" id="it-${esc(it.id)}">
+        <div class="ihead"><h3>${esc(it.h)}</h3>${markBtns(k)}<div class="tagrow"><span class="date">${esc(it.date)}</span>${flagHTML(it.flag)}</div></div>
+        <div class="body"><p>${esc(it.s)}</p>
+          <div class="why"><span class="eyebrow">Why it matters for us</span><p>${esc(it.w)}</p></div>
+          <div class="links">${linksHTML(it.l)}</div></div></article>`; }).join("")}
+    ${sec.quiet ? `<p class="quiet">${esc(sec.quiet)}</p>` : ""}</section>`).join("")}
+  ${S.secFilter==="all" ? `
+  <section class="sec"><div class="sec-head"><span class="num">Dates</span><h2>Deadlines &amp; dates to watch</h2></div>
+    <div class="tablewrap"><table><thead><tr><th>Date</th><th>Days left</th><th>Item</th><th>Owner hint</th></tr></thead><tbody>
+    ${(iss.deadlines||[]).map(({iso,label,item,owner}) => { const days = Math.round((new Date(iso+"T00:00:00")-today)/864e5);
+      const cls = days<0?"past":days<=14?"soon":days<=45?"near":"far"; const txt = days<0?"passed":days===0?"today":days+" d";
+      return `<tr><td class="d">${esc(label)}</td><td class="left ${cls}">${txt}</td><td>${esc(item)}</td><td>${esc(owner)}</td></tr>`; }).join("")}
+    </tbody></table></div></section>
+  <section class="sec"><div class="sec-head"><span class="num">SAB</span><h2>Suggested SAB / team discussion points</h2></div>
+    <ol class="agenda">${(iss.agenda||[]).map(({b,p}) => `<li><b>${esc(b)}</b><p>${esc(p)}</p></li>`).join("")}</ol></section>` : ""}`;
+}
+
+function viewArchive(){
+  return `<div class="vhead"><h1>Archive</h1><p>${S.issues.length} issue${S.issues.length===1?"":"s"}, newest first</p></div>
+  <div class="cards">${S.issues.map(iss => {
+    const items = itemsOf(iss); const fav = items.filter(it => S.marks.fav[key(iss.date,it.id)]).length;
+    const later = items.filter(it => S.marks.later[key(iss.date,it.id)]).length; const seen = !!S.marks.seen[iss.date];
+    return `<a class="card" href="#issue-${iss.date}">
+      <span class="eyebrow">Issue ${String(iss.issueNo).padStart(2,"0")} · ${esc(fmtDate(iss.date))}</span>
+      <h2>${esc(iss.title.split(" — ")[1] || iss.title)}</h2>
+      <ul>${(iss.sixty||[]).slice(0,3).map(({t}) => `<li>${esc(t)}</li>`).join("")}</ul>
+      <div class="stats"><span>${items.length} items</span>${fav?`<span>★ ${fav}</span>`:""}${later?`<span>Read later ${later}</span>`:""}${S.uid && !seen ? `<span class="new">Not opened yet</span>`:""}</div></a>`; }).join("")}</div>`;
+}
+
+function rowHTML(iss, it, extra=""){
+  const k = key(iss.date, it.id);
+  return `<div class="row"><h3><a href="#issue-${iss.date}--${esc(it.id)}">${esc(it.h)}</a></h3>${markBtns(k)}
+    <p>${esc(it.s)}</p>
+    <div class="src"><span>${esc(fmtDate(iss.date))} · ${esc(it.sec.title)}</span>${flagHTML(it.flag)}${(it.l||[]).slice(0,2).map(({t,u})=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join("")}${extra}</div></div>`;
+}
+function viewMarked(kind){
+  const title = kind==="fav" ? "Favorites" : "Read later";
+  if (!S.uid) return `<div class="vhead"><h1>${title}</h1></div><div class="status"><b>Sign in to keep a list</b><span>Favorites and read-later items are saved to your own claude.ai account and are visible only to you.</span></div>`;
+  const ks = Object.entries(S.marks[kind]).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+  const found = ks.map(findItem).filter(Boolean);
+  const blurb = kind==="fav" ? "Items you starred, across all issues. Saved in this browser only." : "Items you saved to come back to. Remove them once read. Saved in this browser only.";
+  if (!found.length) return `<div class="vhead"><h1>${title}</h1><p>${blurb}</p></div><div class="status"><b>Nothing here yet</b><span>Open an issue and use the ${kind==="fav" ? "star" : "bookmark"} button on any item to add it here.</span></div>`;
+  const byIssue = {}; found.forEach(f => (byIssue[f.iss.date] ||= {iss:f.iss, list:[]}).list.push(f.it));
+  return `<div class="vhead"><h1>${title}</h1><p>${found.length} item${found.length===1?"":"s"} · ${blurb}</p></div>
+    ${Object.values(byIssue).sort((a,b)=>b.iss.date.localeCompare(a.iss.date)).map(g => `<section class="group"><span class="eyebrow">Issue ${String(g.iss.issueNo).padStart(2,"0")} · ${esc(fmtDate(g.iss.date))}</span>
+    <div class="rows">${g.list.map(it => rowHTML(g.iss, it)).join("")}</div></section>`).join("")}`;
+}
+
+function viewSearch(q){
+  const ql = q.toLowerCase(); const hits = [];
+  S.issues.forEach(iss => itemsOf(iss).forEach(it => {
+    if ([it.h,it.s,it.w,it.sec.title].join(" ").toLowerCase().includes(ql)) hits.push({iss,it});
+  }));
+  return `<div class="vhead"><h1>Search</h1><p>${hits.length} result${hits.length===1?"":"s"} for “${esc(q)}” across ${S.issues.length} issue${S.issues.length===1?"":"s"}</p></div>
+    ${hits.length ? `<div class="rows">${hits.map(h => rowHTML(h.iss, h.it)).join("")}</div>` : `<div class="status"><b>No matches</b><span>Try a shorter term, such as a regulation name or a product.</span></div>`}`;
+}
+
+function render(scroll){
+  counts();
+  const r = route();
+  document.querySelectorAll("nav a").forEach(a => a.setAttribute("aria-current", a.dataset.v === (r.v==="issue" ? (r.date===S.issues[0]?.date ? "latest" : "archive") : r.v) ? "page" : "false"));
+  const v = $("#view");
+  if (!S.loaded){
+    v.innerHTML = S.error ? `<div class="status"><b>The library isn't available here</b><span>${esc(S.error)}</span></div>`
+      : `<div class="status"><b>${S.timedOut ? "Still connecting" : "Loading your briefing library"}</b><span>${S.timedOut ? "The library can't be reached yet. It will appear here as soon as the connection answers." : "Loading issues…"}</span></div>`;
+    return;
+  }
+  if (!S.issues.length){ v.innerHTML = `<div class="status"><b>No issues yet</b><span>Each weekly briefing is added here automatically when it is published.</span></div>`; return; }
+  const stale = S.timedOut ? `<div class="banner">Showing a saved copy. Newer issues may not be shown until the connection answers.</div>` : "";
+  if (S.q){ v.innerHTML = stale + viewSearch(S.q); return; }
+  let html, focus = null;
+  if (r.v==="archive") html = viewArchive();
+  else if (r.v==="favorites") html = viewMarked("fav");
+  else if (r.v==="read-later") html = viewMarked("later");
+  else {
+    const iss = r.v==="issue" ? (issueBy(r.date) || S.issues[0]) : S.issues[0];
+    focus = r.item; html = viewIssue(iss, focus); markSeen(iss.date);
+  }
+  v.innerHTML = stale + html;
+  $("#top") && document.documentElement.style.setProperty("--topH", $("#top").offsetHeight + "px");
+  if (scroll){
+    const el = focus && document.getElementById("it-"+focus);
+    if (el) el.scrollIntoView({block:"start"}); else window.scrollTo(0,0);
+  }
+}
+function markSeen(d){
+  if (!S.canMark || S.marks.seen[d]) return;
+  S.marks.seen[d] = Date.now(); persist();
+}
+let qT; $("#gq").addEventListener("input", e => { clearTimeout(qT); qT = setTimeout(() => { S.q = e.target.value.trim(); render(true); }, 150); });
+
+/* ---------- boot ---------- */
+/* Static hosting (GitHub Pages): issues/index.json lists every issue; each issue is issues/<date>.json.
+   Favorites / read-later / opened state live in this browser's localStorage. */
+function setIssues(list){
+  const byDate = {};
+  list.forEach(x => { if (x && x.date && x.sections) byDate[x.date] = x; });
+  S.issues = Object.values(byDate).sort((a,b) => b.date.localeCompare(a.date));
+  S.loaded = true;
+}
+S.uid = "local"; S.canMark = true; loadMarks();
+render(true);
+(async () => {
+  try {
+    const idx = await fetch("issues/index.json", {cache:"no-cache"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    const dates = (idx.issues || []).map(x => x.date);
+    const got = await Promise.all(dates.map(d => fetch("issues/"+d+".json", {cache:"no-cache"}).then(r => r.ok ? r.json() : null).catch(() => null)));
+    setIssues(got.filter(Boolean));
+  } catch(e){ S.error = "Couldn't load issues/index.json (" + e.message + ")."; }
+  render(true);
+})();
+window.addEventListener("storage", e => { if (e.key === LS_KEY){ loadMarks(); render(); } });
+</script>
+</body>
+</html>
