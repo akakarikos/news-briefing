@@ -4,7 +4,7 @@ Weekly briefing on European banking regulation, payments, security, solution arc
 
 **Dashboard:** https://akakarikos.github.io/news-briefing/
 
-- `index.html` — the library: latest issue, archive, search, favorites and read-later (saved in your browser).
+- `index.html` — the library: latest issue, archive, search, favorites and read-later. Marks are saved in the browser and, with **Sync** on, in a secret GitHub Gist so they follow you across devices (needs a classic token with only the `gist` scope, entered once per device).
 - `issues/<YYYY-MM-DD>.json` — one file per issue (the dashboard's data).
 - `issues/index.json` — list of issues, rebuilt by `scripts/build_index.py`.
 - `newsletters/<YYYY-MM-DD>.md` — Markdown copy of each issue.

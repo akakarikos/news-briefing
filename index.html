@@ -135,6 +135,22 @@ td.d,td.left{font:500 13px var(--mono);white-space:nowrap;font-variant-numeric:t
 .row .src{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font:500 12px var(--mono);color:var(--muted);align-items:center}
 .group{display:grid;gap:10px}
 .group > .eyebrow{padding-top:6px}
+.syncbtn{font:500 13px var(--body);padding:7px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.syncbtn:hover{border-color:var(--accent);color:var(--ink)}
+.syncbtn .dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.syncbtn[data-s="on"] .dot{background:#2E7D4F}.syncbtn[data-s="busy"] .dot{background:var(--amber)}.syncbtn[data-s="err"] .dot{background:var(--crit)}
+dialog#sync{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:0;width:min(520px,calc(100vw - 32px))}
+dialog#sync::backdrop{background:rgba(0,0,0,.45)}
+#sync form{padding:20px 22px;display:grid;gap:12px}
+#sync h2{font-size:22px}
+#sync p,#sync ol{margin:0;font-size:14px;color:var(--muted)}
+#sync ol{padding-left:20px;display:grid;gap:4px}
+#sync input{font:400 14px var(--mono);padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+#sync .row2{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+#sync button{font:500 14px var(--body);padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+#sync button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+#sync .msg{font-size:13.5px;color:var(--ink);background:var(--accent-soft);border-radius:8px;padding:8px 12px}
+#sync .msg.err{background:var(--crit-soft);color:var(--crit)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13.5px;z-index:20}
 @media (max-width:560px){.sixty{padding:16px}.sec-head h2{font-size:20px}.top .inner{gap:8px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
@@ -154,6 +170,7 @@ td.d,td.left{font:500 13px var(--mono);white-space:nowrap;font-variant-numeric:t
     </nav>
     <label for="gq" style="position:absolute;left:-9999px">Search all issues</label>
     <input id="gq" class="gsearch" type="search" placeholder="Search all issues: DORA, IBM i, VoP…">
+    <button type="button" class="syncbtn" id="syncbtn" data-s="off" title="Sync favorites and read later across devices"><span class="dot"></span><span id="synclabel">Sync: off</span></button>
   </div>
 </header>
 
@@ -161,6 +178,7 @@ td.d,td.left{font:500 13px var(--mono);white-space:nowrap;font-variant-numeric:t
   <div class="status"><b>Loading your briefing library</b><span>Loading issues…</span></div>
 </main>
 <div class="toast" id="toast" hidden></div>
+<dialog id="sync"><form method="dialog" id="syncform"></form></dialog>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -199,25 +217,139 @@ function counts(){
   $("#n-later").textContent = Object.keys(S.marks.later).length || "";
 }
 
-/* ---------- marks (private per viewer) ---------- */
-const LS_KEY = "fab-library-marks-v1";
-function persist(){
-  try { localStorage.setItem(LS_KEY, JSON.stringify(S.marks)); }
+/* ---------- marks: localStorage, optionally synced through a secret GitHub Gist ---------- */
+const LS_KEY = "fab-library-marks-v1", SYNC_KEY = "fab-library-sync-v1";
+const GIST_DESC = "Fintech & Architecture Briefing — library marks (synced)", GIST_FILE = "marks.json";
+S.del = {};
+const blank = () => ({fav:{}, later:{}, seen:{}, del:{}});
+function snapshot(){ return {fav:S.marks.fav, later:S.marks.later, seen:S.marks.seen, del:S.del}; }
+function apply(d){
+  d = d || blank();
+  S.marks = {fav:{...(d.fav||{})}, later:{...(d.later||{})}, seen:{...(d.seen||{})}}; S.del = {...(d.del||{})};
+}
+/* union by newest timestamp; a removal wins over an older add */
+function merge(a, b){
+  a = a || blank(); b = b || blank(); const o = blank();
+  for (const kind of ["fav","later","seen","del"])
+    for (const src of [a[kind]||{}, b[kind]||{}])
+      for (const [k,t] of Object.entries(src)) if (!(o[kind][k] >= t)) o[kind][k] = t;
+  const cutoff = Date.now() - 180*864e5;
+  for (const [dk,t] of Object.entries(o.del)){
+    const [kind, k] = [dk.slice(0, dk.indexOf("|")), dk.slice(dk.indexOf("|")+1)];
+    if (o[kind] && o[kind][k] !== undefined){ if (t >= o[kind][k]) delete o[kind][k]; else { delete o.del[dk]; continue; } }
+    if (t < cutoff) delete o.del[dk];
+  }
+  return o;
+}
+function saveLocal(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(snapshot())); }
   catch(e){ toast("Couldn't save in this browser (private mode or storage blocked)."); }
 }
-function loadMarks(){
-  try { const d = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-    if (d) S.marks = {fav:{...(d.fav||{})}, later:{...(d.later||{})}, seen:{...(d.seen||{})}}; } catch(e){}
-}
+function persist(){ saveLocal(); Sync.schedule(); }
+function loadMarks(){ try { apply(JSON.parse(localStorage.getItem(LS_KEY) || "null")); } catch(e){} }
 function toggle(kind, k){
   if (!S.canMark) return;
-  const m = S.marks[kind];
-  if (m[k]) { delete m[k]; toast(kind==="fav" ? "Removed from favorites" : "Removed from read later"); }
-  else { m[k] = Date.now(); toast(kind==="fav" ? "Added to favorites" : "Saved for later"); }
+  const m = S.marks[kind], dk = kind + "|" + k;
+  if (m[k]) { delete m[k]; S.del[dk] = Date.now(); toast(kind==="fav" ? "Removed from favorites" : "Removed from read later"); }
+  else { m[k] = Date.now(); delete S.del[dk]; toast(kind==="fav" ? "Added to favorites" : "Saved for later"); }
   persist(); counts();
   document.querySelectorAll(`[data-mk="${kind}"][data-k="${CSS.escape(k)}"]`).forEach(b => b.setAttribute("aria-pressed", !!m[k]));
   const r = route(); if (r.v==="favorites" || r.v==="read-later") render();
 }
+
+/* ---------- sync ---------- */
+const Sync = {
+  cfg: null, timer: null, busy: false,
+  load(){ try { this.cfg = JSON.parse(localStorage.getItem(SYNC_KEY) || "null"); } catch(e){ this.cfg = null; } },
+  store(){ try { this.cfg ? localStorage.setItem(SYNC_KEY, JSON.stringify(this.cfg)) : localStorage.removeItem(SYNC_KEY); } catch(e){} },
+  status(s, label){ const b = $("#syncbtn"); b.dataset.s = s; $("#synclabel").textContent = label; },
+  idle(){ this.cfg ? this.status("on", "Synced") : this.status("off", "Sync: off"); },
+  async api(path, opts = {}, token = this.cfg && this.cfg.token){
+    const r = await fetch("https://api.github.com" + path, {...opts, cache:"no-store", headers:{
+      "Accept":"application/vnd.github+json", "Authorization":"Bearer " + token,
+      ...(opts.body ? {"Content-Type":"application/json"} : {})}});
+    if (!r.ok){ const e = new Error(r.status === 401 ? "The token was rejected (expired or revoked)." : r.status === 404 ? "Gist not found, or the token lacks the gist scope." : "GitHub returned " + r.status + "."); e.status = r.status; throw e; }
+    return r.status === 204 ? null : r.json();
+  },
+  async readGist(){
+    const g = await this.api("/gists/" + this.cfg.gistId);
+    const f = g.files && g.files[GIST_FILE];
+    if (!f) return blank();
+    const txt = f.truncated ? await fetch(f.raw_url, {cache:"no-store"}).then(r => r.text()) : f.content;
+    try { return JSON.parse(txt || "null") || blank(); } catch(e){ return blank(); }
+  },
+  async writeGist(data){
+    await this.api("/gists/" + this.cfg.gistId, {method:"PATCH", body: JSON.stringify({files:{[GIST_FILE]:{content: JSON.stringify(data)}}})});
+  },
+  /* pull remote, merge with local, push back if anything differs */
+  async run(){
+    if (!this.cfg || this.busy) return;
+    this.busy = true; this.status("busy", "Syncing…");
+    try {
+      const remote = await this.readGist();
+      const merged = merge(remote, snapshot());
+      const changedLocal = JSON.stringify(merge(snapshot(), blank())) !== JSON.stringify(merged);
+      apply(merged); saveLocal();
+      if (JSON.stringify(merge(remote, blank())) !== JSON.stringify(merged)) await this.writeGist(merged);
+      this.cfg.last = Date.now(); this.store(); this.idle();
+      if (changedLocal) render();
+    } catch(e){
+      this.status("err", "Sync error"); this.lastError = e.message;
+      if (e.status === 401){ toast("Sync stopped: " + e.message); }
+    } finally { this.busy = false; }
+  },
+  schedule(){ if (!this.cfg) return; clearTimeout(this.timer); this.status("busy", "Saving…"); this.timer = setTimeout(() => this.run(), 1200); },
+  async connect(token){
+    token = token.trim();
+    if (!token) throw new Error("Paste a token first.");
+    let found = null;
+    for (let page = 1; page <= 5 && !found; page++){
+      const list = await this.api("/gists?per_page=100&page=" + page, {}, token);
+      found = list.find(g => g.description === GIST_DESC && g.files && g.files[GIST_FILE]);
+      if (list.length < 100) break;
+    }
+    if (!found) found = await this.api("/gists", {method:"POST", body: JSON.stringify({description: GIST_DESC, public: false, files:{[GIST_FILE]:{content: JSON.stringify(snapshot())}}})}, token);
+    this.cfg = {token, gistId: found.id, created: !found.updated_at || found.created_at === found.updated_at};
+    this.store(); await this.run();
+  },
+  disconnect(){ this.cfg = null; this.store(); this.idle(); }
+};
+
+function openSync(msg, isErr){
+  const f = $("#syncform"), c = Sync.cfg;
+  const when = c && c.last ? new Date(c.last).toLocaleString("en-GB", {dateStyle:"medium", timeStyle:"short"}) : "never";
+  f.innerHTML = c ? `
+    <h2>Sync is on</h2>
+    <p>Favorites, read later and opened issues are saved to a secret gist on your GitHub account and pulled on every device you connect. Last synced: ${esc(when)}.</p>
+    ${msg || Sync.lastError ? `<div class="msg${isErr || Sync.lastError ? " err" : ""}">${esc(msg || Sync.lastError)}</div>` : ""}
+    <p><a href="https://gist.github.com/${esc(c.gistId)}" target="_blank" rel="noopener">Open the gist ↗</a></p>
+    <div class="row2"><button value="off" id="s-off">Turn off on this device</button><button value="now" id="s-now">Sync now</button><button value="close" class="primary">Done</button></div>` : `
+    <h2>Sync across devices</h2>
+    <p>Your marks are kept in a <b>secret gist</b> on your GitHub account. Each device needs a token once:</p>
+    <ol>
+      <li><a href="https://github.com/settings/tokens/new?scopes=gist&description=Briefing%20library%20sync" target="_blank" rel="noopener">Create a classic token with only the <b>gist</b> scope ↗</a> (pick an expiry you're comfortable with).</li>
+      <li>Paste it below and connect. Do the same on your other devices with the same token or a new one.</li>
+    </ol>
+    <p>The token stays in this browser only and is sent only to api.github.com. It can read and write your gists, nothing else.</p>
+    ${msg ? `<div class="msg${isErr ? " err" : ""}">${esc(msg)}</div>` : ""}
+    <label for="s-token" style="position:absolute;left:-9999px">GitHub token</label>
+    <input id="s-token" type="password" autocomplete="off" spellcheck="false" placeholder="ghp_…">
+    <div class="row2"><button value="close">Cancel</button><button value="connect" class="primary" id="s-connect">Connect</button></div>`;
+  const dlg = $("#sync"); if (!dlg.open) dlg.showModal();
+}
+$("#syncbtn").addEventListener("click", () => openSync());
+$("#syncform").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.value === "close") return;
+  e.preventDefault();
+  if (b.value === "connect"){
+    b.disabled = true; b.textContent = "Connecting…";
+    try { await Sync.connect($("#s-token").value); counts(); render(); openSync("Connected. Your marks now sync across devices."); }
+    catch(err){ Sync.cfg = null; Sync.store(); Sync.idle(); openSync(err.message || "Couldn't connect.", true); }
+  } else if (b.value === "now"){ Sync.lastError = null; await Sync.run(); openSync(Sync.lastError ? null : "Up to date.", !!Sync.lastError); }
+  else if (b.value === "off"){ Sync.disconnect(); openSync("Sync is off on this device. Your marks stay in this browser and in the gist."); }
+});
+
 function markBtns(k){
   const dis = S.canMark ? "" : " disabled";
   const t = S.canMark ? "" : " (saving unavailable)";
@@ -350,15 +482,18 @@ let qT; $("#gq").addEventListener("input", e => { clearTimeout(qT); qT = setTime
 
 /* ---------- boot ---------- */
 /* Static hosting (GitHub Pages): issues/index.json lists every issue; each issue is issues/<date>.json.
-   Favorites / read-later / opened state live in this browser's localStorage. */
+   Favorites / read-later / opened state live in localStorage and, when Sync is on, in a secret GitHub Gist. */
 function setIssues(list){
   const byDate = {};
   list.forEach(x => { if (x && x.date && x.sections) byDate[x.date] = x; });
   S.issues = Object.values(byDate).sort((a,b) => b.date.localeCompare(a.date));
   S.loaded = true;
 }
-S.uid = "local"; S.canMark = true; loadMarks();
+S.uid = "local"; S.canMark = true; loadMarks(); Sync.load(); Sync.idle();
 render(true);
+Sync.run();
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") Sync.run(); });
+setInterval(() => { if (document.visibilityState === "visible") Sync.run(); }, 5*60*1000);
 (async () => {
   try {
     const idx = await fetch("issues/index.json", {cache:"no-cache"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
