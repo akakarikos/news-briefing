@@ -1,0 +1,408 @@
+{
+ "date": "2026-11-11",
+ "issueNo": 2,
+ "title": "Fintech & Architecture Briefing — Wednesday 11 Nov 2026",
+ "window": "9 – 11 Nov 2026",
+ "docUrl": "https://claude.ai/artifact/8xuJjKktzMERiiAyVzj6F8",
+ "note": "Today is a Wednesday, so the window runs from the most recent Monday (9 Nov) to today. The 9 Nov edition is not in the repository, and no Projects tool was available to backfill it, so this is issue 2, checked for repeats against issue 1 only. Web page fetching was blocked in this run: InfoQ, Medium and every primary source (ECB, EBA, CNCF, vendor sites) failed to load. Every item rests on search-engine summaries, and the links point to the best source those summaries named. InfoQ items link to InfoQ's topic listing because the article URLs could not be opened. The window was thin, so three items from 4–6 Nov that issue 1 did not cover are tagged Context. Merged about 40 overlapping posts into 6 items. The Projects copy was skipped (no Projects tool).",
+ "sixty": [
+  {
+   "t": "Crédit Mutuel Arkéa heist came through a supplier's platform: about €100–118m in fraudulent transfers, the clearest DORA third-party test case so far this year.",
+   "id": "arkea"
+  },
+  {
+   "t": "Crédit Agricole proposes merging its Italian bank into Banco BPM, creating Italy's third-largest group. It needs ECB approval.",
+   "id": "bpm"
+  },
+  {
+   "t": "Digital euro timeline unchanged: a 12-month pilot with 36 PSPs from H2 2027, possible issuance in 2029, and the law targeted for end-2026.",
+   "id": "de-timeline"
+  },
+  {
+   "t": "Greek banks plan 600+ hires for 2027, weighted towards IT, AI and data. Joint HBA careers day on 28 Nov.",
+   "id": "gr-hiring"
+  },
+  {
+   "t": "KubeCon NA adds an AI inference and agentic track. Confluent, now part of IBM, pitches a \"Streamhouse\" for real-time agent context.",
+   "id": "kubecon"
+  },
+  {
+   "t": "InfoQ pick: Cloudflare is building a CA for Merkle Tree Certificates, aiming to make post-quantum TLS affordable in bandwidth.",
+   "id": "infoq-mtc"
+  }
+ ],
+ "sections": [
+  {
+   "id": "reg",
+   "n": 1,
+   "title": "European regulation & supervision",
+   "short": "Regulation",
+   "quiet": "No material EBA, ESMA, AMLA or DORA publications in the window. The only EBA item was a 10 Nov public hearing on ITS for joint prudential decisions.",
+   "items": [
+    {
+     "id": "srep-ict",
+     "h": "ICT is still the weakest SREP score as the 2026 SREP letters land",
+     "date": "Nov",
+     "flag": {
+      "k": "watch",
+      "t": "SREP"
+     },
+     "s": "KPMG's November SSM briefing says the ECB has delivered the 2026 SREP results and has published or discussed expectations on ICT risk, AI governance and cyber resilience. ICT governance, cybersecurity and third-party management stay the lowest-scoring area.",
+     "w": "Read our own SREP letter's ICT findings next to the 31 Oct AI-cyber action plan. They should map to the same roadmap epics, so the JST sees one plan rather than two.",
+     "l": [
+      {
+       "t": "KPMG SSM Insights, Nov 2026",
+       "u": "https://assets.kpmg.com/content/dam/kpmgsites/xx/pdf/2026/11/ssm-quarterly-newsletter-edition-Nov-2026.pdf.coredownload.pdf"
+      }
+     ]
+    },
+    {
+     "id": "psd3-update",
+     "h": "Update: PSD3/PSR still not in the Official Journal",
+     "date": "as of 11 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Update"
+     },
+     "s": "We found no report of formal adoption or publication since issue 1's item. Once published, the PSR applies about 21 months later, and some payee-verification provisions after 27 months.",
+     "w": "Keep the December–January publication assumption in the payments roadmap. The application date will be fixed by that publication date, so record it in the SAB tracker as soon as it lands.",
+     "l": [
+      {
+       "t": "Matheson",
+       "u": "https://www.matheson.com/insights/psd3-and-psr-published-whats-changing-for-eu-payment-services/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pay",
+   "n": 2,
+   "title": "Payments",
+   "short": "Payments",
+   "quiet": "No material Wero/EPI, TARGET2/T2, TIPS or ISO 20022 releases in the window.",
+   "items": [
+    {
+     "id": "de-timeline",
+     "h": "Digital euro timeline restated: pilot in H2 2027, issuance possibly in 2029",
+     "date": "5–9 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Budget 2027"
+     },
+     "s": "The ECB's working plan is a 12-month pilot with 36 payment service providers from the second half of 2027. A first issuance in 2029 depends on the regulation being adopted in 2026 and a separate Governing Council decision. Trilogues are under way, with co-legislators aiming to finish by end-2026.",
+     "w": "This follows issue 1's network-provider item. If we want a role in the pilot or early onboarding, the integration design (holdings limits, waterfall and reverse waterfall to IBM i accounts, a TIBCO/APIM façade) needs a 2027 budget line now.",
+     "l": [
+      {
+       "t": "Payment Expert",
+       "u": "https://paymentexpert.com/2026/11/05/ecb-digital-euro-banks-merchants/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gr",
+   "n": 3,
+   "title": "Greece",
+   "short": "Greece",
+   "quiet": "No Bank of Greece or IRIS publications of note in the window.",
+   "items": [
+    {
+     "id": "gr-hiring",
+     "h": "Eight Greek banks plan 600+ hires in 2027, led by IT and AI",
+     "date": "9 Nov",
+     "flag": null,
+     "s": "Hellenic Bank Association members, including NBG, Eurobank, Piraeus and Alpha, will recruit for IT and AI transformation, digital banking, data analytics, ESG and risk. A joint careers event takes place on 28 Nov at Piraeus 260 in Tavros.",
+     "w": "Every systemic bank will be competing for the same architects and data engineers in the same quarter. Settle our 2027 headcount and grading for solution and data architects before this event resets salary expectations.",
+     "l": [
+      {
+       "t": "Greek City Times",
+       "u": "https://greekcitytimes.com/2026/11/09/greek-banking-sector-enters-new-era-of-recruitment/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sec",
+   "n": 4,
+   "title": "Payment & banking security",
+   "short": "Security",
+   "items": [
+    {
+     "id": "arkea",
+     "h": "Crédit Mutuel Arkéa: fraudulent transfers through a supplier's platform",
+     "date": "4–8 Nov",
+     "flag": {
+      "k": "urgent",
+      "t": "Major incident"
+     },
+     "s": "Attackers reached the group through an external service provider's technology platform and pushed through transfers that press reports put at about €118m. The bank disputes that figure, says part of the funds were blocked, and reports no customer losses. Nearly all services are back, and the provider and the technique have not been disclosed.",
+     "w": "This is a payment-initiation compromise through a third party, the exact scenario DORA's register and TLPT are meant to surface. Check which vendors hold standing connectivity into our payment paths (TIBCO flows, the SWIFT bureau, card processing), and whether outbound-volume anomaly detection would stop a burst of this size before settlement.",
+     "l": [
+      {
+       "t": "BleepingComputer",
+       "u": "https://bleepingcomputer.com/news/security/hackers-pull-off-133-million-french-bank-heist-via-service-provider"
+      }
+     ]
+    },
+    {
+     "id": "kev",
+     "h": "Patch check: Brotli \"Node2Shell\" flaw and recent KEV additions",
+     "date": "KEV deadline 10 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Patch check"
+     },
+     "s": "CISA added a critical Brotli decoder flaw to its Known Exploited Vulnerabilities catalogue on 27 Oct, with a two-week deadline that has now passed. Recent additions also cover Cisco ASA/FTD, Citrix NetScaler and a Windows WinSock driver flaw. Reports give the Brotli bug several names and an unconfirmed CVE ID, so verify against CISA.",
+     "w": "Brotli sits inside Node, NGINX and many API gateways. Ask the APIM and AKS ingress owners to confirm library versions. NetScaler and ASA are classic edge devices for a bank.",
+     "l": [
+      {
+       "t": "BleepingComputer",
+       "u": "https://bleepingcomputer.com/news/security/cisa-warns-of-hackers-now-exploiting-critical-node2shell-flaw"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "arch",
+   "n": 5,
+   "title": "Solution architecture & backend",
+   "short": "Architecture",
+   "items": [
+    {
+     "id": "kubecon",
+     "h": "KubeCon NA (9–12 Nov) adds an AI inference and agentic track",
+     "date": "9 Nov",
+     "flag": null,
+     "s": "CNCF's flagship has a new track for production AI inference and agent workloads, alongside platform engineering and security. Early vendor launches include an \"agent skills\" registry and eBPF-based database observability.",
+     "w": "Watch the recordings for model serving on Kubernetes and agent sandboxing before we fix the AKS pattern for internal LLM workloads. Ignite (17–20 Nov) will bring the matching AKS announcements.",
+     "l": [
+      {
+       "t": "CNCF",
+       "u": "https://www.cncf.io/announcements/2026/08/10/cncf-reveals-kubecon-cloudnativecon-north-america-2026-schedule-adds-new-ai-inference-agentic-track/"
+      }
+     ]
+    },
+    {
+     "id": "streamhouse",
+     "h": "Confluent, now an IBM company, launches \"Streamhouse\"",
+     "date": "4 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "Confluent announced capabilities that join Kafka streams and table formats into one architecture, to keep business context fresh for AI agents and analytics. It builds on Tableflow, which already integrates with Delta Lake and Unity Catalog.",
+     "w": "With IBM i and Confluent now under one vendor, check concentration risk and the DORA register entry. Streamhouse also overlaps with our Kafka-to-Databricks ingestion, so ask the vendor which layer it expects to own the tables.",
+     "l": [
+      {
+       "t": "Confluent",
+       "u": "https://www.confluent.io/press-release/confluent-introduces-its-streamhouse-architecture-to-power-ai-with-real-time-business-context/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "n": 6,
+   "title": "Enterprise AI in banking",
+   "short": "AI",
+   "quiet": "No new EBA, ECB, BIS or FSB AI-governance publications in the window.",
+   "items": [
+    {
+     "id": "bmo",
+     "h": "BMO puts an agent-assist tool into its credit-card contact centre",
+     "date": "6 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "The tool prepares cases for agents handling Canadian card enquiries and targets 20–30% shorter resolution times. BMO calls the contact centre a testbed for components it will reuse in later agentic applications.",
+     "w": "It is a useful shape for a first production agent: a human in the loop, a narrow case-prep scope, and reusable building blocks. That compares well with NBG's voice-agent goal of handling more than 50% of contact-centre traffic.",
+     "l": [
+      {
+       "t": "Unite.AI",
+       "u": "https://www.unite.ai/?p=506969"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ind",
+   "n": 7,
+   "title": "Industry moves",
+   "short": "Industry",
+   "items": [
+    {
+     "id": "bpm",
+     "h": "Crédit Agricole proposes merging CA Italia into Banco BPM",
+     "date": "9 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "ECB approval"
+     },
+     "s": "The \"friendly\" proposal offers a 20% premium and a €1bn special dividend, and would lift Crédit Agricole's stake to about 45%. Banco BPM's CEO would lead the combined group, Italy's third-largest. Completion is targeted for H2 2027, subject to shareholders and the ECB.",
+     "w": "Cross-group integrations like this become reference cases for core consolidation and for the ECB's view of IT integration risk in M&A. Track how they plan the migration.",
+     "l": [
+      {
+       "t": "Morningstar / Dow Jones",
+       "u": "https://morningstar.com/news/dow-jones/202611091129/credit-agricole-proposes-merger-of-italian-business-with-banco-bpm-update"
+      }
+     ]
+    },
+    {
+     "id": "funding",
+     "h": "European fintech funding stayed light",
+     "date": "week to 9 Nov",
+     "flag": null,
+     "s": "BlackFin counted ten European fintech deals worth €108.4m disclosed, plus small capital-markets and insurtech acquisitions.",
+     "w": "There is no vendor-landscape change to act on.",
+     "l": [
+      {
+       "t": "BlackFin Tech Weekly",
+       "u": "https://blackfintech.substack.com/p/blackfin-tech-weekly-november-9th"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "infoq",
+   "n": 8,
+   "title": "From InfoQ",
+   "short": "InfoQ",
+   "quiet": "InfoQ pages and feeds could not be fetched, so items come from search and link to the topic listing. The Software Architects' Newsletter was not checked this run.",
+   "items": [
+    {
+     "id": "infoq-mtc",
+     "h": "Architecture & Design: Cloudflare builds a CA for Merkle Tree Certificates",
+     "date": "early Nov",
+     "flag": null,
+     "s": "Cloudflare is building a public certificate authority for Merkle Tree Certificates. They aim to cut the handshake bandwidth that large post-quantum signatures would otherwise add to TLS.",
+     "w": "The ECB has promised a post-quantum communication. Certificate size is a real constraint for mobile banking and APIM edges, so start a crypto inventory now.",
+     "l": [
+      {
+       "t": "InfoQ",
+       "u": "https://www.infoq.com/ai-architecture/news/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-uber-mcp",
+     "h": "AI architecture: Uber's MCP Gateway governs 800+ servers and 5,000+ agent tools",
+     "date": "2 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "Uber routes agent-to-tool access through a central MCP gateway that handles registration, authorisation and auditing.",
+     "w": "This is the pattern to standardise before agents multiply: one governed MCP entry point behind APIM, with agent identities rather than borrowed user tokens.",
+     "l": [
+      {
+       "t": "InfoQ",
+       "u": "https://www.infoq.com/ai-architecture/news/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "medium",
+   "n": 9,
+   "title": "Top 3 from Medium",
+   "short": "Medium",
+   "quiet": "Medium tag feeds could not be fetched, and searching site:medium.com found no qualifying stories published 9–11 Nov, so there are no Medium picks this edition.",
+   "items": []
+  }
+ ],
+ "deadlines": [
+  {
+   "iso": "2026-11-12",
+   "label": "12 Nov 2026",
+   "item": "KubeCon NA closes; recordings follow",
+   "owner": "Platform / AKS"
+  },
+  {
+   "iso": "2026-11-14",
+   "label": "14–15 Nov 2026",
+   "item": "ISO 20022 CBPR+ structured-address cut-off",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2026-11-16",
+   "label": "16–20 Nov 2026",
+   "item": "QCon San Francisco",
+   "owner": "Architecture"
+  },
+  {
+   "iso": "2026-11-17",
+   "label": "17–20 Nov 2026",
+   "item": "Microsoft Ignite (sovereignty, AKS)",
+   "owner": "Cloud"
+  },
+  {
+   "iso": "2026-11-18",
+   "label": "~18 Nov 2026",
+   "item": "Expected annual update of ESAs' DORA critical-provider list (unconfirmed)",
+   "owner": "Vendor risk"
+  },
+  {
+   "iso": "2026-11-20",
+   "label": "20 Nov 2026",
+   "item": "IBM i 7.6 TR3 / 7.5 TR9 GA",
+   "owner": "IBM i team"
+  },
+  {
+   "iso": "2026-11-28",
+   "label": "28 Nov 2026",
+   "item": "HBA joint banking careers event, Tavros",
+   "owner": "HR / Architecture"
+  },
+  {
+   "iso": "2026-12-02",
+   "label": "2 Dec 2026",
+   "item": "AI Act prohibitions date (Omnibus moves high-risk to 2 Dec 2027)",
+   "owner": "Compliance / AI"
+  },
+  {
+   "iso": "2026-12-15",
+   "label": "Dec 2026 – Jan 2027",
+   "item": "PSD3/PSR Official Journal publication expected",
+   "owner": "Payments / Compliance"
+  },
+  {
+   "iso": "2026-12-31",
+   "label": "End 2026",
+   "item": "Digital euro regulation target date",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2027-02-01",
+   "label": "Feb 2027",
+   "item": "ECB IT Risk Questionnaire",
+   "owner": "Risk / IT"
+  }
+ ],
+ "agenda": [
+  {
+   "b": "Arkéa as our tabletop scenario.",
+   "p": "Walk through a compromised supplier with payment-initiation reach. List every vendor with standing connectivity into payment paths, check them against the DORA register, and test whether outbound anomaly controls would stop a burst of €100m before settlement."
+  },
+  {
+   "b": "IBM + Confluent concentration.",
+   "p": "IBM i and Kafka now sit with one vendor. Review the exit plan, contract renewal timing, and where Streamhouse overlaps with Databricks."
+  },
+  {
+   "b": "Architect hiring in 2027.",
+   "p": "The systemic banks are hiring the same profiles. Agree our solution and data architect headcount and grading before the 28 Nov event."
+  },
+  {
+   "b": "Start the post-quantum inventory.",
+   "p": "Map certificates, key sizes and TLS termination points (APIM, AKS ingress, mobile) ahead of the ECB's promised post-quantum communication."
+  }
+ ]
+}
