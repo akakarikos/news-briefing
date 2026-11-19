@@ -1,0 +1,409 @@
+{
+ "date": "2026-11-19",
+ "issueNo": 4,
+ "title": "Fintech & Architecture Briefing — Thursday 19 Nov 2026",
+ "window": "16 – 18 Nov 2026",
+ "docUrl": "https://claude.ai/artifact/WHpg3bKESRK34oFDtXtMkG",
+ "note": "Thursday edition covering Monday 16 to Wednesday 18 Nov. Issue 3 (Tuesday 17 Nov) already covered 12–17 Nov, so this issue repeats nothing from it and focuses on what appeared after it: mainly Microsoft Ignite (17–20 Nov) and a supply-chain attack on Microsoft's Python Agent Framework. I ran 24 searches. Fetching worked for InfoQ (RSS and articles), the Medium tag feeds, the EBA, ESMA and Microsoft Tech Community. azure.microsoft.com, Virtualization Review, heise, OX Security and BleepingComputer could not be fetched, and neither could the Medium story pages, so those items rest on search summaries and feed previews. The ECB press listing did not render, and search found no ECB release dated 16–18 Nov. Regulation, payments, Greece and industry were quiet. Merged 9 overlapping posts into 3 items. The Software Architects' Newsletter is out of scope (the next issue is due 27 Nov). The Docs type needs a connector this session lacks, so the editable copy is an HTML page. No Projects tool was available, so the Projects copy and the backfill check were skipped.",
+ "sixty": [
+  {
+   "t": "Act now: on 17 Nov, attackers published hijacked versions 1.26.1 and 1.26.2 of Microsoft's agent-framework package on PyPI. A .pth file steals Azure, CI and managed-identity credentials as soon as Python starts. Sweep Databricks, AKS and CI images today.",
+   "id": "agent-framework-pypi"
+  },
+  {
+   "t": "Ignite: AKS adds an Agent Sandbox (Kata microVMs, in preview) and lets you run Foundry models and hosted agents on your own clusters (limited preview). Confidential VM node pools are GA.",
+   "id": "aks-ignite"
+  },
+  {
+   "t": "Ignite: Entra Agent ID can now discover local coding agents such as Copilot CLI, Claude Code and Codex (preview), and Azure SRE Agent gains customer-managed keys. Agent identity is becoming an IAM control.",
+   "id": "entra-agents"
+  },
+  {
+   "t": "InfoQ pick: a reference design for governed autonomous AI. Agents propose actions, a deterministic policy gate and tool gateway execute them, and every step is audited. It maps well onto agents acting near the IBM i core.",
+   "id": "infoq-governed-autonomy"
+  },
+  {
+   "t": "Coinbase blocked $4.7m in transfers to a deepfake giveaway scam in which victims paid voluntarily. APP-fraud controls have to read intent, not only authentication.",
+   "id": "coinbase-deepfake"
+  },
+  {
+   "t": "Regulation was quiet. Today (19 Nov) the ECB presents its SREP aggregate results, and digital euro pilot merchant applications close tomorrow, 20 Nov.",
+   "id": "eba-tc-subs"
+  }
+ ],
+ "sections": [
+  {
+   "id": "reg",
+   "n": 1,
+   "title": "European regulation & supervision",
+   "short": "Regulation",
+   "quiet": "There were no new DORA, PSD3/PSR, AMLA, MiCA or AI Act publications on 16–18 Nov. The ESAs' annual refresh of the critical ICT provider list was expected around this time but is still unconfirmed. ESMA's 18 Nov note on DRSP supervision is not relevant to us.",
+   "items": [
+    {
+     "id": "eba-tc-subs",
+     "h": "EBA: non-EU banks' subsidiaries hold a growing share of EU banking assets",
+     "date": "18 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Context"
+     },
+     "s": "The EBA's annual reports put the subsidiaries of non-EU banks at 10.22% of total EU banking assets at end-2025, up from 9.8% a year earlier. EU banks also increased foreign-currency funding to 25.3% of total funding, which narrowed currency mismatches, especially in US dollars.",
+     "w": "This is background rather than an action item. It is useful context for Risk ahead of today's ECB SREP aggregate results (19 Nov), which will set the supervisory tone for our 2027 priorities.",
+     "l": [
+      {
+       "t": "EBA press release, 18 Nov 2026",
+       "u": "https://www.eba.europa.eu/publications-and-media/press-releases/eba-reports-growing-market-share-third-country-bank-subsidiaries-eu-and-reduced-foreign-currency"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pay",
+   "n": 2,
+   "title": "Payments",
+   "short": "Payments",
+   "quiet": "There were no digital euro, TARGET2/T2, TIPS, Wero/EPI, SEPA Inst or ISO 20022 releases on 16–18 Nov. Reminder: applications from merchants to join the digital euro pilot close on 20 Nov at 17:00 CET (see issue 2 for the legislative push).",
+   "items": []
+  },
+  {
+   "id": "gr",
+   "n": 3,
+   "title": "Greece",
+   "short": "Greece",
+   "quiet": "No Bank of Greece, HBA, IRIS/DIAS or systemic-bank technology announcements were found for 16–18 Nov. Coverage on 16 Nov was about nine-month credit expansion (Eurobank +€3.8bn, Piraeus +€2.2bn), not technology. Kathimerini and Naftemporiki were not fetched this run.",
+   "items": []
+  },
+  {
+   "id": "sec",
+   "n": 4,
+   "title": "Payment & banking security",
+   "short": "Security",
+   "items": [
+    {
+     "id": "agent-framework-pypi",
+     "h": "Microsoft's agent-framework package on PyPI hijacked to steal Azure and CI credentials",
+     "date": "17 Nov",
+     "flag": {
+      "k": "urgent",
+      "t": "Act now"
+     },
+     "s": "OX Security reports that versions 1.26.1 and 1.26.2 of Microsoft's Python Agent Framework on PyPI carry a credential stealer. A .pth file runs it whenever Python starts, with no import needed, and it collects environment secrets, cloud and package-manager credentials, and Azure managed-identity tokens, then sends them to a webhook. The package still depends on the genuine agent-framework-core 1.26.0, so nothing visibly breaks. Microsoft had published no advisory in the sources found. It follows a similar compromise of Microsoft's durabletask SDK in May.",
+     "w": "Our GenAI pilots, Databricks notebooks and AKS build images may pull this SDK. Check lockfiles and images for the two versions, or for site-packages/agent_framework_meta.pth. Rotate any secrets and managed-identity scopes those environments could reach. Enforce hash-pinned installs through our internal mirror with a quarantine delay for new releases.",
+     "l": [
+      {
+       "t": "OX Security research, 17 Nov 2026",
+       "u": "https://www.ox.security/blog/breaking-hijacked-releases-of-microsofts-official-agent-framework-steals-azure-and-ci-credentials/"
+      }
+     ]
+    },
+    {
+     "id": "coinbase-deepfake",
+     "h": "Coinbase blocks $4.7m in transfers to a deepfake giveaway scam",
+     "date": "18 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "APP fraud"
+     },
+     "s": "Coinbase says its fraud systems stopped about $4.7m in customer transfers to a deepfake Elon Musk giveaway scam. Because victims sent the money voluntarily, authentication checks were no help, and detection depended on destination and behaviour signals.",
+     "w": "Authorised push-payment fraud via deepfakes is the scenario PSR liability rules target. Our SEPA Inst and IRIS fraud scoring needs beneficiary-risk and behavioural signals in the sub-10-second window, not only SCA. This is worth sharing with the fraud team.",
+     "l": [
+      {
+       "t": "BleepingComputer, 18 Nov 2026",
+       "u": "https://www.bleepingcomputer.com/news/security/coinbase-blocks-47-million-in-transfers-to-elon-musk-deepfake-scam/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "arch",
+   "n": 5,
+   "title": "Solution architecture & backend",
+   "short": "Architecture",
+   "items": [
+    {
+     "id": "aks-ignite",
+     "h": "AKS at Ignite 2026: agent sandboxes, Foundry on your own clusters, and confidential node pools GA",
+     "date": "17 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Azure"
+     },
+     "s": "Microsoft's AKS team announced an Agent Sandbox extension (preview) for running agent-generated code. It uses pre-warmed pools with Kata microVM isolation or a serverless ACI runtime, alongside Pod Snapshot and a Kata runtime class. AKS AI Manager for Foundry and Foundry hosted agents can now run on customer-operated clusters (limited preview). Confidential VM node pools on Azure Container Linux (Intel TDX and AMD SEV-SNP), CIS Level 1 images, managed GPU node pools, Chaos Studio for AKS and Fleet Manager cross-cluster Cilium networking are GA.",
+     "w": "Agent hosting can now stay inside our own AKS network and data-residency boundary, which simplifies the DORA and data-protection case for GenAI workloads. Agent Sandbox gives us a platform-native way to implement the containment standard discussed last issue. Confidential node pools and Chaos Studio GA are candidates for the AKS landing-zone baseline.",
+     "l": [
+      {
+       "t": "Microsoft Tech Community — AKS at Ignite 2026, 17 Nov 2026",
+       "u": "https://techcommunity.microsoft.com/blog/appsonazureblog/run-models-and-agents-on-your-own-kubernetes-clusters-aks-at-microsoft-ignite-20/4573912"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "n": 6,
+   "title": "Enterprise AI in banking",
+   "short": "AI",
+   "quiet": "No new EBA, ECB, BIS or FSB AI-governance publications appeared on 16–18 Nov.",
+   "items": [
+    {
+     "id": "entra-agents",
+     "h": "Ignite: Entra treats agents as identities, including local coding agents",
+     "date": "17 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Agent identity"
+     },
+     "s": "Microsoft's Ignite Azure and Entra announcements add controls that manage AI agents as identities in their own right, instead of borrowing a human user's permissions. Entra Agent ID can now discover about 60 types of local agents, including GitHub Copilot CLI, Claude Code and OpenAI Codex (preview). Azure SRE Agent gains customer-managed keys, Entra Agent ID integration and cross-agent communication (preview).",
+     "w": "Developer laptops already run agents that act with engineers' credentials. Discovering them and giving them separate identities is the control that IAM and DORA access-management reviews will ask for. Pilot it with the platform team, and pair it with the new agent-identity lifecycle policies (60-day inactivity disable).",
+     "l": [
+      {
+       "t": "Virtualization Review — Ignite 2026 Azure announcements, 17 Nov 2026",
+       "u": "https://virtualizationreview.com/articles/2026/11/17/microsoft-ignite-2026-top-azure-announcements-for-enterprise-it.aspx"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ind",
+   "n": 7,
+   "title": "Industry moves",
+   "short": "Industry",
+   "quiet": "No material core-banking vendor news, European fintech funding or M&A, or bank–tech partnerships were found for 16–18 Nov.",
+   "items": []
+  },
+  {
+   "id": "infoq",
+   "n": 8,
+   "title": "From InfoQ",
+   "short": "InfoQ",
+   "items": [
+    {
+     "id": "infoq-governed-autonomy",
+     "h": "Architecture & Design: Governed autonomous intelligence for mission-critical systems",
+     "date": "16 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Reference design"
+     },
+     "s": "The article separates reasoning from execution. Agents correlate signals and propose actions but cannot touch production. A deterministic policy gate, driven by a versioned action catalogue, assigns each proposed action a risk class, and a single tool gateway enforces least privilege, argument validation and post-action health checks. Medium- and high-risk actions need human approval, autonomy is widened one action class at a time and can be revoked, and every action leaves a full audit chain.",
+     "w": "This is close to the pattern we need before any agent can act on IBM i, TIBCO or payment operations. The policy gate and gateway map onto APIM plus a rules service, and the audit record gives us DORA and AI Act evidence. It is a candidate SAB reference architecture.",
+     "l": [
+      {
+       "t": "InfoQ article, 16 Nov 2026",
+       "u": "https://www.infoq.com/articles/utility-governed-autonomous-intelligence-ai/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-celeborn",
+     "h": "Architecture & Design: LinkedIn moves Spark shuffle to Apache Celeborn",
+     "date": "18 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Data platform"
+     },
+     "s": "LinkedIn runs more than 300,000 Spark jobs a day. It moved shuffle data off compute nodes onto dedicated Celeborn workers with a Raft-based control plane. Daily shuffle fetch failures fell from about 750 to 20, compute cost dropped 10% and runtimes improved 14%.",
+     "w": "Databricks manages shuffle for us, but the lesson carries over: separating state from elastic compute is what stabilises large batch estates. That matters for our end-of-day and regulatory-reporting pipelines.",
+     "l": [
+      {
+       "t": "InfoQ, 18 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/linkedin-celeborn-remote-shuffle/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-uber-legal",
+     "h": "AI architecture: Uber's legal agent uses a rules engine that overrides the model",
+     "date": "16 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Pattern"
+     },
+     "s": "Uber's contract-redlining agent is a Word add-in on a LangGraph backend, with OpenSearch holding rules and past lawyer decisions. A deterministic rules engine overrides the model whenever a non-negotiable clause applies, and lawyers approve every suggestion. Uber reports 91% accuracy and contract reviews more than 20% faster.",
+     "w": "Letting hard rules override model output, with feedback captured from experts, is a practical pattern for credit, KYC and complaints copilots, where policy must always win. It also gives model-risk reviewers a clear control point.",
+     "l": [
+      {
+       "t": "InfoQ, 16 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/uber-legal-redlining-agent/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-datadog",
+     "h": "AI architecture: Datadog adds A/B experiments for agents on live traffic",
+     "date": "17 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Evals"
+     },
+     "s": "Datadog's Online Experiments splits production traffic between agent variants using feature flags. It compares evaluator quality scores with latency, tokens, cost and errors, and keeps full tool-call traces. In one example, a cheaper model cut cost 44% at similar quality, but the traces showed it passed invalid tool parameters more often.",
+     "w": "Controlled experiments on live traffic with traces are how a model or prompt change should go through change management under model-risk rules. Whatever observability stack we pick, we need this capability before scaling GenAI beyond pilots.",
+     "l": [
+      {
+       "t": "InfoQ, 17 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/datadog-ai-agent-observability/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "medium",
+   "n": 9,
+   "title": "Top 3 from Medium",
+   "short": "Medium",
+   "items": [
+    {
+     "id": "md-temporal-ledger",
+     "h": "Don't Trust the Ledger After a Crash: Payment Workflows in Go and Temporal — Victor Jonah (tag: payments)",
+     "date": "18 Nov",
+     "flag": null,
+     "s": "The story shows how durable-execution replay, idempotency keys and compensation steps keep a payment consistent when a worker crashes mid-transfer and retries. Its core argument is that the workflow history, not the ledger state at crash time, is the source of truth for recovery. Summarised from the feed preview, as the story page could not be opened.",
+     "w": "It applies directly to SEPA Inst and IRIS orchestration across TIBCO and IBM i, where partial failures and duplicate postings are the main operational risk. It is a useful lens for reviewing our saga and idempotency standards.",
+     "l": [
+      {
+       "t": "Medium — Victor Jonah",
+       "u": "https://medium.com/@victorjonah/dont-trust-the-ledger-after-a-crash-payment-workflows-in-go-and-temporal-b4662cf6db5b"
+      }
+     ]
+    },
+    {
+     "id": "md-kafka-queues",
+     "h": "Kafka vs Message Queue: When to Use Which, Now That Kafka Has Queues — Santosh Yadav (tag: kafka)",
+     "date": "18 Nov",
+     "flag": null,
+     "s": "The author reads the same Kafka 4.4 topics both as a log and as a queue, using share groups. The argument is that the choice depends on what each consumer needs after reading a message: replay and ordering point to a log, while per-message acknowledgement and work distribution point to a queue. Summarised from the feed preview.",
+     "w": "With queue semantics now native in Kafka, it is worth asking whether some TIBCO EMS queue workloads could move onto our Kafka platform, which would reduce how many brokers we run. That needs a deliberate ADR, not drift.",
+     "l": [
+      {
+       "t": "Medium — Santosh Yadav",
+       "u": "https://santoshyadav979439.medium.com/kafka-vs-message-queue-when-to-use-which-now-that-kafka-has-queues-5d758c579738"
+      }
+     ]
+    },
+    {
+     "id": "md-mcp-identity",
+     "h": "Part 3: Create Identity Protected MCP Tools — John George (tag: azure)",
+     "date": "18 Nov",
+     "flag": null,
+     "s": "The third part of a hands-on series builds MCP tools that validate caller identity tokens, on top of the signing-key refresh added in part 2. It covers how an agent's tool calls get authenticated and authorised, rather than trusting whoever reaches the MCP endpoint. Summarised from the feed preview.",
+     "w": "Any MCP server we expose over APIM or AKS needs exactly this, with Entra-issued tokens, scopes per tool and key rotation. It pairs with the Entra agent-identity news above.",
+     "l": [
+      {
+       "t": "Medium — John George",
+       "u": "https://medium.com/@mg8600/part-3-create-identity-protected-mcp-tools-247ec8f02a65"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "deadlines": [
+  {
+   "iso": "2026-11-19",
+   "label": "19 Nov 2026",
+   "item": "ECB press conference: 2026 SREP aggregate results and supervisory priorities",
+   "owner": "Risk / SAB"
+  },
+  {
+   "iso": "2026-11-20",
+   "label": "17–20 Nov 2026",
+   "item": "Microsoft Ignite (AKS agent sandbox, Entra Agent ID, Foundry)",
+   "owner": "Cloud"
+  },
+  {
+   "iso": "2026-11-20",
+   "label": "20 Nov 2026, 17:00 CET",
+   "item": "Digital euro pilot: merchant applications close",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2026-11-20",
+   "label": "20 Nov 2026",
+   "item": "IBM i 7.6 TR3 / 7.5 TR9 GA",
+   "owner": "IBM i team"
+  },
+  {
+   "iso": "2026-11-27",
+   "label": "27 Nov 2026",
+   "item": "InfoQ Software Architects' Newsletter (November issue)",
+   "owner": "Architecture"
+  },
+  {
+   "iso": "2026-11-28",
+   "label": "28 Nov 2026",
+   "item": "HBA joint banking careers event, Tavros",
+   "owner": "HR / Architecture"
+  },
+  {
+   "iso": "2026-11-30",
+   "label": "Nov–Dec 2026",
+   "item": "ESAs' annual refresh of the DORA critical ICT provider list (date unconfirmed)",
+   "owner": "Vendor risk"
+  },
+  {
+   "iso": "2026-12-02",
+   "label": "2 Dec 2026",
+   "item": "AI Act: Art. 50(2) marking of AI-generated content applies",
+   "owner": "Compliance / AI"
+  },
+  {
+   "iso": "2026-12-07",
+   "label": "Early Dec 2026",
+   "item": "Foundry hosted agents on AKS: broader public preview targeted",
+   "owner": "Cloud / AI"
+  },
+  {
+   "iso": "2026-12-15",
+   "label": "Dec 2026 – Jan 2027",
+   "item": "PSD3/PSR Official Journal publication expected",
+   "owner": "Payments / Compliance"
+  },
+  {
+   "iso": "2026-12-31",
+   "label": "31 Dec 2026",
+   "item": "EBA consultation on draft RTS on operational risk management framework closes",
+   "owner": "Op risk / Architecture"
+  },
+  {
+   "iso": "2026-12-31",
+   "label": "End 2026",
+   "item": "ECB target for adopting the digital euro regulation",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2027-01-06",
+   "label": "6 Jan 2027",
+   "item": "InfoQ certification cohorts start (production AI, architecture trade-offs)",
+   "owner": "Team development"
+  },
+  {
+   "iso": "2027-02-01",
+   "label": "Feb 2027",
+   "item": "ECB IT Risk Questionnaire",
+   "owner": "Risk / IT"
+  }
+ ],
+ "agenda": [
+  {
+   "b": "Python supply chain for agent SDKs.",
+   "p": "Use agent-framework as the trigger to require hash-pinned installs through our internal mirror, with a quarantine delay on new releases, for Databricks, AKS and CI. Detect .pth files in images, and scope managed identities so one stolen token cannot reach production data."
+  },
+  {
+   "b": "Where agents run.",
+   "p": "Decide whether GenAI agents run on our own AKS (Agent Sandbox with Kata, Foundry hosted agents) or on managed Foundry. Document the residency, DORA exit-strategy and containment trade-offs as an ADR."
+  },
+  {
+   "b": "A governed action pattern for agents.",
+   "p": "Adopt the InfoQ policy-gate-plus-tool-gateway design, with rules overriding the model as Uber does, as the SAB reference for any agent that acts on IBM i, TIBCO or payment operations. Include risk classes, human approval and audit records."
+  },
+  {
+   "b": "Agent and developer-tool identities.",
+   "p": "Trial Entra Agent ID discovery for local coding agents in the engineering tenant, and set the policy on which agent tools may use which credentials."
+  }
+ ]
+}
