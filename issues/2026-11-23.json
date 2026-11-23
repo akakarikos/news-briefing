@@ -1,0 +1,438 @@
+{
+ "date": "2026-11-23",
+ "issueNo": 5,
+ "title": "Fintech & Architecture Briefing — Monday 23 Nov 2026",
+ "window": "19 – 22 Nov 2026",
+ "docUrl": "https://claude.ai/artifact/MB6UQyJPQh2NaQvvmmx3gD",
+ "note": "Monday edition covering Thursday 19 to Sunday 22 Nov. Issue 4 (19 Nov) is the baseline, and nothing from it is repeated. Two items are marked as updates: the JPMorgan vendor breach (follows the n0n item in issue 3) and the digital euro trilogue (follows issue 4's pilot reminder). I ran 26 searches. Fetching worked for InfoQ (RSS and articles), the Medium tag feeds, ECB Banking Supervision, the EBA and the FSB. table.media, dnews.gr and thenextweb.com are not reachable from this session, so the trilogue outcome and the Bank of Greece credit rules rest on search summaries. Medium story pages were not opened, so those summaries come from feed previews. Industry moves and enterprise-AI deployments were quiet in the window. Merged 21 overlapping posts into 6 items. The Software Architects' Newsletter is out of scope (the next issue is due 27 Nov). No Projects tool was available, so the Projects copy and the backfill check were skipped.",
+ "sixty": [
+  {
+   "t": "ECB 2026 SREP: operational and ICT risk is again the weakest area, with an average score of 2.99 and 96% of banks scored medium-high. DORA gaps, cloud concentration and BCBS 239 data architecture lead the 2027–29 priorities.",
+   "id": "ecb-srep"
+  },
+  {
+   "t": "Update: JPMorgan confirmed that third-party vendors holding its marketing data were breached. This is the n0n group's claim from issue 3. Reuters counted more than 16,000 customer emails in the leak.",
+   "id": "jpm-vendors"
+  },
+  {
+   "t": "EBA Autumn Risk Assessment: cyber and data security remain banks' top operational concern. The EBA flags concentration on shared ICT providers and the new model and provider risks that AI brings.",
+   "id": "eba-rar"
+  },
+  {
+   "t": "Update: the 18 Nov digital euro trilogue ended without the expected political deal. Year-end adoption, and with it a 2027 pilot, now depends on a December round.",
+   "id": "de-trilogue"
+  },
+  {
+   "t": "InfoQ pick: 'the harness is the new operating system'. Agent safety comes from isolation and scoped credentials, not from human approval prompts. Separately, secrets saved through Claude Code's 'don't ask again' approvals have been found in public repos.",
+   "id": "infoq-harness"
+  },
+  {
+   "t": "Google is donating gVisor and Agent Substrate to the CNCF. Vendor-neutral sandboxing for agents on Kubernetes is becoming a real option alongside AKS's Kata-based Agent Sandbox.",
+   "id": "gvisor-cncf"
+  }
+ ],
+ "sections": [
+  {
+   "id": "reg",
+   "n": 1,
+   "title": "European regulation & supervision",
+   "short": "Regulation",
+   "quiet": "There were no new DORA RTS/ITS, PSD3/PSR, AMLA, MiCA or AI Act texts on 19–22 Nov. The FSB's 2027 priorities (17 Nov) fall just outside the window. They add possible work on AI and fraud and on AI and operational resilience.",
+   "items": [
+    {
+     "id": "ecb-srep",
+     "h": "ECB 2026 SREP results: ICT is still the weakest score, and the 2027–29 priorities name DORA, cloud concentration and data architecture",
+     "date": "19 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "SAB agenda"
+     },
+     "s": "This is an update to issue 2's item on SREP letters. Across 108 significant banks the average SREP score held at 2.5, while operational and ICT risk averaged 2.99, with 96% of banks scored medium-high. The ECB cites DORA implementation gaps, ICT change management (the main cause of unplanned downtime), concentration on cloud providers and providers outside the EU, and persistent BCBS 239 weaknesses in data architecture and lineage. The 2027–29 priorities include ICT security, third-party risk, remediation of material ICT findings, and engagement on banks' AI strategies (the ECB has already run GenAI workshops with 11 banks).",
+     "w": "These are the themes our JST will push in 2027. Map our open ICT findings, our change-failure metrics for IBM i, TIBCO and AKS releases, and our Databricks lineage coverage against them now. Bring a BCBS 239 data-architecture remediation view to the SAB before Q1 planning.",
+     "l": [
+      {
+       "t": "ECB Banking Supervision: 2026 SREP aggregated results",
+       "u": "https://www.bankingsupervision.europa.eu/activities/srep/2026/html/ssm.srep202611_aggregatedresults2026.en.html"
+      }
+     ]
+    },
+    {
+     "id": "eba-rar",
+     "h": "EBA Autumn Risk Assessment: cyber and data security top the operational concerns, and AI adds model and provider risk",
+     "date": "19 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Risk view"
+     },
+     "s": "EU/EEA banks remain well capitalised, with a CET1 ratio of 16.2% and an NPL ratio of about 1.8% in June 2026. The EBA lists cyber risk, data security, fraud and third-party risk as the leading operational concerns, and warns that heavy reliance on common ICT providers can spread a disruption across many banks. On AI, banks already use models, including frontier models, to find control weaknesses, but the EBA notes that AI raises exposure to cyberattacks and fraud and adds model risk and dependence on external providers.",
+     "w": "The report supports our case for concentration-risk scenarios (Azure region or tenant loss, an outage at a single AI-model provider) in the DORA register and in our exit plans. Cite it in the AI governance paper as the supervisor's view on dependence on model providers.",
+     "l": [
+      {
+       "t": "EBA press release, 19 Nov 2026",
+       "u": "https://www.eba.europa.eu/publications-and-media/press-releases/eueea-banks-continue-display-resilience-amid-sovereign-debt-pressures-borrower-vulnerabilities-and"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pay",
+   "n": 2,
+   "title": "Payments",
+   "short": "Payments",
+   "quiet": "There were no TARGET2/T2, TIPS, SEPA Inst, Wero/EPI or ISO 20022 releases on 19–22 Nov. Digital euro pilot merchant applications closed on 20 Nov, as noted in issue 4.",
+   "items": [
+    {
+     "id": "de-trilogue",
+     "h": "Update: the seventh digital euro trilogue (18 Nov) ended without the expected deal",
+     "date": "20 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Timeline risk"
+     },
+     "s": "This follows issue 4's pilot reminder. The Irish Presidency had aimed to reach political agreement on 18 Nov, but reporting on 20 Nov says the round did not produce one. Positions are reportedly close on compensation and merchant fees, while holding limits and offline payments remain open. The ECB has said that a 2027 pilot and possible issuance in 2029 depend on adoption by year-end. The source is paywalled, so this summary rests on its abstract.",
+     "w": "Keep the digital euro integration workstream (wallet onboarding, holding-limit waterfall to and from IBM i accounts, offline) at design-only level until a political deal is announced. If December also slips, our 2027 build budget for it can move right.",
+     "l": [
+      {
+       "t": "Table.Briefings, 20 Nov 2026",
+       "u": "https://table.media/en/europe/news/digital-euro-the-council-and-parliament-are-still-far-from-agreement"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gr",
+   "n": 3,
+   "title": "Greece",
+   "short": "Greece",
+   "quiet": "No Bank of Greece, HBA, DIAS/IRIS or systemic-bank technology announcements were found for 19–22 Nov.",
+   "items": [
+    {
+     "id": "bog-credit",
+     "h": "Bank of Greece rules for non-bank consumer lenders and loan brokers take effect",
+     "date": "20 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "In force"
+     },
+     "s": "A Bank of Greece package, published in early November, applies from 20 Nov 2026. It tightens licensing, capital and professional requirements for firms that lend directly to consumers and for loan brokers, and it targets retailer instalment schemes that bypass bank financing. This summary comes from search results, because the article could not be opened.",
+     "w": "This levels the field with BNPL-style retail instalments, which is useful context for our own point-of-sale instalment and IRIS-based checkout products. Business may ask for faster onboarding of partner merchants, so check what our APIM partner APIs offer.",
+     "l": [
+      {
+       "t": "dnews.gr, 2 Nov 2026",
+       "u": "https://www.dnews.gr/eidhseis/news-in-english/619984/greece-tightens-rules-on-consumer-credit-and-loan-brokers"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sec",
+   "n": 4,
+   "title": "Payment & banking security",
+   "short": "Security",
+   "items": [
+    {
+     "id": "jpm-vendors",
+     "h": "Update: JPMorgan confirms that third-party vendors were breached, after n0n leaked the data",
+     "date": "19 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Vendor risk"
+     },
+     "s": "This updates issue 3's n0n item. JPMorgan says outside vendors holding its marketing data were attacked, exposing some customer names and email addresses, and that the breach is unrelated to its 16 Nov outage, which it blames on a bug in on-premises hardware. In the leaked files Reuters found about 124 employee and more than 16,000 customer email addresses. Visa says its systems were not involved, while Mastercard reports a limited exposure at a third-party provider.",
+     "w": "Marketing and CRM vendors sit outside most banks' DORA 'critical' tier, yet their data is enough for targeted phishing. Check that our register of information and our data-minimisation rules cover marketing SaaS. Brief the fraud and contact-centre teams on n0n-style lures ahead of Black Friday.",
+     "l": [
+      {
+       "t": "Reuters (via The Star), 19 Nov 2026",
+       "u": "https://www.thestar.com.my/tech/tech-news/2026/11/19/jpmorgan-says-third-party-vendors-targeted-in-cyberattack"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "arch",
+   "n": 5,
+   "title": "Solution architecture & backend",
+   "short": "Architecture",
+   "items": [
+    {
+     "id": "gvisor-cncf",
+     "h": "Google donates gVisor and Agent Substrate to the CNCF for sandboxing AI agents",
+     "date": "20 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Kubernetes"
+     },
+     "s": "Google is moving gVisor, a user-space kernel that stops untrusted code from calling the host kernel directly, and Agent Substrate into the CNCF. Agent Substrate runs agents on Kubernetes by keeping agent state (sessions, files, memory) separate from pooled, pre-warmed workers, so idle agents do not hold a Pod each. Google says agents resume in under 500 ms and can optionally run in Cloud Hypervisor microVMs.",
+     "w": "Agents can now be isolated on any cluster using open, vendor-neutral tools, not only AKS's Kata-based Agent Sandbox (issue 4). Include this option in our ADR on where agents run, and in our AKS exit-strategy story for DORA.",
+     "l": [
+      {
+       "t": "Google Open Source Blog",
+       "u": "https://opensource.googleblog.com/2026/11/sandboxing-untrusted-ai-agents-at-scale.html"
+      }
+     ]
+    },
+    {
+     "id": "pg19",
+     "h": "PostgreSQL 19 released: online REPACK, query plan advice and logical replication of sequences",
+     "date": "19 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Release"
+     },
+     "s": "PostgreSQL 19 adds a native REPACK command, which with CONCURRENTLY can reorganise a table without blocking reads or writes. It also adds pg_plan_advice for pinning query plans, logical replication of sequences, WAIT FOR LSN for read-your-writes consistency on standbys, and server-side TLS SNI. The SQL/PGQ graph queries seen in beta appear to have been dropped from the final release.",
+     "w": "This matters for PostgreSQL on Azure (Flexible Server) behind our digital channels. Plan pinning and read-your-writes on replicas address two common incident causes. Track when Azure supports version 19 before we move any read-scale or outbox databases to it.",
+     "l": [
+      {
+       "t": "PostgreSQL Global Development Group, 19 Nov 2026",
+       "u": "https://www.postgresql.org/about/news/postgresql-19-released-3449/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ai",
+   "n": 6,
+   "title": "Enterprise AI in banking",
+   "short": "AI",
+   "quiet": "No new production GenAI deployments by European banks and no EBA, ECB, BIS or FSB AI guidance appeared on 19–22 Nov. The supervisory view of AI is in the SREP and EBA items above, and AI-agent security is in section 8.",
+   "items": []
+  },
+  {
+   "id": "ind",
+   "n": 7,
+   "title": "Industry moves",
+   "short": "Industry",
+   "quiet": "No material core-banking vendor news, large European fintech funding or M&A, or bank–tech partnerships were found for 19–22 Nov.",
+   "items": []
+  },
+  {
+   "id": "infoq",
+   "n": 8,
+   "title": "From InfoQ",
+   "short": "InfoQ",
+   "items": [
+    {
+     "id": "infoq-failover",
+     "h": "Architecture & Design: observability as the control plane for multi-region failover",
+     "date": "20 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Resilience pattern"
+     },
+     "s": "The article argues that failover should run as a closed loop: detect regional degradation, act under a defined policy, then confirm recovery, with humans notified afterwards. It recommends active-active regions under real load, a DNS TTL tuned to the RTO, composite and sustained alert conditions (error rate plus p99 latency over about 90 seconds), and health checks that exercise real dependencies. When a shared dependency takes down both regions, traffic should be held and a human paged.",
+     "w": "This is a ready-made blueprint for our AKS and APIM multi-region design and for DORA severe-but-plausible scenario tests. The 'both regions failing on a shared dependency' case is exactly the shared-provider concentration risk the EBA warns about.",
+     "l": [
+      {
+       "t": "InfoQ article, 20 Nov 2026",
+       "u": "https://www.infoq.com/articles/observability-control-plane-failover/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-gke-kernel",
+     "h": "Architecture & Design: how Google traced GKE API timeouts to a Linux kernel TCP bug",
+     "date": "21 Nov",
+     "flag": {
+      "k": "ctx",
+      "t": "Post-mortem"
+     },
+     "s": "Google's post-mortem shows three interacting bugs, in GKE, Private Service Connect and the Linux kernel's TCP stack, that caused intermittent Kubernetes API connection failures and blocked around 800 developers. No single layer looked faulty on its own. Summarised from InfoQ's news item.",
+     "w": "Our AKS clusters use private endpoints and Private Link in the same pattern. When intermittent API-server timeouts appear, the runbook should include kernel and connection-tracking checks, not only control-plane checks.",
+     "l": [
+      {
+       "t": "InfoQ, 21 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/gke-kernel-network-bug/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-harness",
+     "h": "AI architecture: 'the harness is the new operating system' (QCon SF keynote)",
+     "date": "22 Nov",
+     "flag": {
+      "k": "watch",
+      "t": "Agent design"
+     },
+     "s": "The keynote argued that an agent is the model plus the harness, and that the harness decides what it can do and how safely. Treat context like virtual memory (give the model pointers, not everything), limit authority rather than relying on tired human approvers, and enforce boundaries with isolation and scoped credentials: 'instructions guide, boundaries enforce'. Benchmarks showed the same model scoring between 65.5% and 74.2% depending on the harness.",
+     "w": "This matches the policy-gate pattern from issue 4. Our agent standard should specify the harness (tool scopes, sandbox, credentials, outcome states) and require evaluation per harness version, not only per model.",
+     "l": [
+      {
+       "t": "InfoQ, 22 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/harness-new-operating-system/"
+      }
+     ]
+    },
+    {
+     "id": "infoq-claude-secrets",
+     "h": "AI architecture: Claude Code 'don't ask again' approvals leaked secrets into public repos",
+     "date": "22 Nov",
+     "flag": {
+      "k": "urgent",
+      "t": "Check now"
+     },
+     "s": "Apiiro and GitGuardian found that approving a shell command with 'don't ask again' stores the full command, including any inline password or token, in .claude/settings.local.json. That file is excluded only through a global git ignore, so it ends up committed when a repo is cloned on another machine or the file was already tracked. GitGuardian counted 31,088 secrets in public repos, 5,343 of them still valid, plus 613 in Docker Hub images. Generic scanners missed some, because the secrets sat inside command strings.",
+     "w": "The same class of risk applies to any coding agent that writes local permission files. Add .claude/ and similar agent config paths to repo-level .gitignore templates, extend secret scanning in Azure DevOps or GitHub to those paths and to image layers, and rotate anything found.",
+     "l": [
+      {
+       "t": "InfoQ, 22 Nov 2026",
+       "u": "https://www.infoq.com/news/2026/11/claude-code-leaking-secrets/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "medium",
+   "n": 9,
+   "title": "Top 3 from Medium",
+   "short": "Medium",
+   "items": [
+    {
+     "id": "md-exactly-once",
+     "h": "Exactly-once is a lie: delivery semantics in Kafka and friends — Jitin Bahri (tag: event-driven-architecture)",
+     "date": "21 Nov",
+     "flag": null,
+     "s": "The story explains what at-most-once, at-least-once and 'exactly-once' actually guarantee, and where Kafka's transactional guarantees stop at the edge of the broker. It shows how to build consumers that stay correct with idempotent handlers and deduplication. Summarised from the feed preview.",
+     "w": "Every TIBCO or Kafka consumer that posts to the IBM i core needs an idempotency key and a dedup store. Kafka EOS alone does not protect a SEPA Inst posting from a duplicate. Use it as a review checklist for payment consumers.",
+     "l": [
+      {
+       "t": "Medium — Jitin Bahri",
+       "u": "https://medium.com/@jitinbahri/exactly-once-is-a-lie-delivery-semantics-in-kafka-and-friends-9539ccc5db81"
+      }
+     ]
+    },
+    {
+     "id": "md-oracle-cdc",
+     "h": "Change Data Capture from Oracle to Kafka on AWS, Without Log Mining — Sercan Bilgiç (tag: kafka)",
+     "date": "22 Nov",
+     "flag": null,
+     "s": "Part 1 of a four-part production series on a query-based CDC producer built on Apache Flink. It polls very large Oracle tables and publishes to Kafka without reading redo logs, and later parts cover cursors, schemas and failure handling. Summarised from the feed preview.",
+     "w": "When journal-based CDC from IBM i (Db2 for i) is not licensed or not allowed, query-based CDC is the realistic fallback. The series' trade-offs (timestamp versus cursor, schema registry, reporting failures loudly) carry over directly.",
+     "l": [
+      {
+       "t": "Medium — Sercan Bilgiç",
+       "u": "https://medium.com/@sercanbilgic/a-query-based-cdc-producer-on-amazon-managed-service-for-apache-flink-the-architecture-and-the-8cb4a2aed637"
+      }
+     ]
+    },
+    {
+     "id": "md-agent-vnet",
+     "h": "Your AI Agent Works Until You Put It in a Private Network — Dave R (tag: azure)",
+     "date": "22 Nov",
+     "flag": null,
+     "s": "The story walks through how Microsoft Foundry hosted agents use an agent subnet and data proxy inside a VNet. It gives five checks for finding the failing hop: subnet, DNS, routing, TLS inspection and private endpoints. Published in Towards AI. Summarised from the feed preview.",
+     "w": "Our Foundry agents will run behind hub-and-spoke routing, private DNS and TLS-inspecting firewalls. Give the landing-zone team this as a troubleshooting checklist before the first agent pilot.",
+     "l": [
+      {
+       "t": "Medium (Towards AI) — Dave R",
+       "u": "https://pub.towardsai.net/ai-agent-private-network-foundry-hosted-agents-vnet-df28fae99b44"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "deadlines": [
+  {
+   "iso": "2026-11-25",
+   "label": "25 Nov 2026",
+   "item": "EBA consultations close: investment-firm prudential RTS and reclassification RTS",
+   "owner": "Regulatory"
+  },
+  {
+   "iso": "2026-11-27",
+   "label": "27 Nov 2026",
+   "item": "InfoQ Software Architects' Newsletter (November issue)",
+   "owner": "Architecture"
+  },
+  {
+   "iso": "2026-11-28",
+   "label": "28 Nov 2026",
+   "item": "HBA joint banking careers event, Tavros",
+   "owner": "HR / Architecture"
+  },
+  {
+   "iso": "2026-11-30",
+   "label": "Nov–Dec 2026",
+   "item": "ESAs' annual refresh of the DORA critical ICT provider list (date unconfirmed)",
+   "owner": "Vendor risk"
+  },
+  {
+   "iso": "2026-12-02",
+   "label": "2 Dec 2026",
+   "item": "AI Act: Art. 50(2) marking of AI-generated content applies",
+   "owner": "Compliance / AI"
+  },
+  {
+   "iso": "2026-12-10",
+   "label": "Dec 2026",
+   "item": "EBA final draft ITS on supervisory reporting",
+   "owner": "Regulatory reporting"
+  },
+  {
+   "iso": "2026-12-15",
+   "label": "Dec 2026",
+   "item": "Next digital euro trilogue under the Irish Presidency (date to be confirmed)",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2026-12-15",
+   "label": "Dec 2026 – Jan 2027",
+   "item": "PSD3/PSR Official Journal publication expected",
+   "owner": "Payments / Compliance"
+  },
+  {
+   "iso": "2026-12-31",
+   "label": "31 Dec 2026",
+   "item": "EBA consultation on draft RTS on operational risk management framework closes",
+   "owner": "Op risk / Architecture"
+  },
+  {
+   "iso": "2026-12-31",
+   "label": "31 Dec 2026",
+   "item": "Irish Presidency ends; ECB target for adopting the digital euro regulation",
+   "owner": "Payments"
+  },
+  {
+   "iso": "2027-01-04",
+   "label": "4 Jan 2027",
+   "item": "EBA consultation on joint-decision ITS (institution-specific requirements) closes",
+   "owner": "Risk"
+  },
+  {
+   "iso": "2027-01-06",
+   "label": "6 Jan 2027",
+   "item": "InfoQ certification cohorts start (production AI, architecture trade-offs)",
+   "owner": "Team development"
+  },
+  {
+   "iso": "2027-02-01",
+   "label": "Feb 2027",
+   "item": "ECB IT Risk Questionnaire",
+   "owner": "Risk / IT"
+  }
+ ],
+ "agenda": [
+  {
+   "b": "SREP 2027 readiness.",
+   "p": "Map our open ICT findings, our change-failure rate for IBM i, TIBCO and AKS releases, and our Databricks lineage coverage to the ECB's 2027–29 priorities. Agree a BCBS 239 data-architecture remediation roadmap for Q1."
+  },
+  {
+   "b": "Vendor tiering beyond 'critical'.",
+   "p": "Use the JPMorgan vendor breach to review how marketing, CRM and analytics SaaS that hold customer PII are recorded in the DORA register, and what contract and data-minimisation controls apply to them."
+  },
+  {
+   "b": "Agent harness standard.",
+   "p": "Define the mandatory harness for any agent (scoped credentials, sandbox: AKS Agent Sandbox or gVisor, tool gateway, outcome states, evaluation per harness version). Include coding agents: repo-level ignores and secret scanning for agent config files."
+  },
+  {
+   "b": "Failover as a closed loop.",
+   "p": "Have the platform team assess our Azure multi-region failover against the InfoQ pattern (composite alerts, confirmation step, holding traffic when a shared dependency fails) ahead of the next DORA scenario test."
+  }
+ ]
+}

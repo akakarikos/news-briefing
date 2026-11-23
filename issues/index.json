@@ -1,6 +1,11 @@
 {
- "latest": "2026-11-19",
+ "latest": "2026-11-23",
  "issues": [
+  {
+   "date": "2026-11-23",
+   "issueNo": 5,
+   "title": "Fintech & Architecture Briefing — Monday 23 Nov 2026"
+  },
   {
    "date": "2026-11-19",
    "issueNo": 4,
